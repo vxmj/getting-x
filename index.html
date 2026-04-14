@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI - 探索未来智能</title>
+    <style>
+        /* 基础重置与排版 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 导航栏设计 */
+        header {
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #4facfe;
+        }
+
+        /* 首屏横幅区 (Hero Section) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            background: radial-gradient(circle at center, #1a233a 0%, #0b0f19 70%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        /* 核心技术网格区 */
+        .features {
+            padding: 8rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #4facfe;
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* 交互演示区 (Interactive Demo) */
+        .demo-section {
+            padding: 6rem 5%;
+            background: #0f1423;
+        }
+
+        .chat-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #1e293b;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .chat-header {
+            background: rgba(15, 20, 35, 0.8);
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .chat-box {
+            height: 300px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+        }
+
+        .msg-ai {
+            background: rgba(79, 172, 254, 0.1);
+            color: #e2e8f0;
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-user {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 1rem;
+            background: rgba(15, 20, 35, 0.8);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .input-area input:focus {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .input-area button {
+            margin-left: 1rem;
+            padding: 0 1.5rem;
+            border: none;
+            border-radius: 30px;
+            background: #4facfe;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .input-area button:hover {
+            background: #00f2fe;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Nexus AI</div>
+        <nav>
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#features">核心技术</a></li>
+                <li><a href="#demo">终端体验</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>重塑认知的智能边界</h1>
+            <p>融合机器学习、自然语言处理与前沿计算架构，为您带来突破性的AI解决方案。在这里，数据转化为智慧，想象降临于现实。</p>
+            <a href="#features" class="btn">探索技术架构</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">下一代人工智能技术栈</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">🧠</div>
+                <h3>深度学习架构</h3>
+                <p>基于多层神经网络的自适应算法，能够处理复杂的非结构化数据，在图像识别、预测分析等领域提供超乎想象的准确率。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🗣️</div>
+                <h3>自然语言处理 (NLP)</h3>
+                <p>打破人机沟通壁垒。通过大型语言模型（LLM）理解上下文逻辑、语境情绪，实现如人类般流畅的文本生成与对话系统。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">👁️</div>
+                <h3>计算机视觉</h3>
+                <p>赋予机器“视觉”。通过高效的图像分割、目标检测与追踪技术，在自动驾驶、智能安防及医疗影像分析中发挥关键作用。</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>边缘计算协同</h3>
+                <p>将AI算力下沉至设备终端，实现毫秒级响应，在保护数据隐私的同时极大降低网络延迟，适用于物联网与实时分析场景。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="demo-section" id="demo">
+        <h2 class="section-title">与 Nexus AI 对话</h2>
+        <div class="chat-container">
+            <div class="chat-header">Nexus AI - 实验性终端 v2.0</div>
+            <div class="chat-box" id="chatBox">
+                <div class="message msg-ai">您好！我是 Nexus AI 演示助理。您可以尝试向我发送任何消息，体验基础的响应互动。</div>
+            </div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="输入您的消息..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">发送</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Nexus AI Research. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const userInput = document.getElementById('userInput');
+
+        // AI 的预设简单回复库
+        const aiResponses = [
+            "这是一个非常有趣的问题，我的神经网络正在分析它。",
+            "在当前的技术架构下，这完全是可以实现的。",
+            "我理解您的意思。AI的魅力就在于不断地学习和适应。",
+            "从数据的角度来看，这揭示了一种潜在的模式。",
+            "我已经记录了您的指令，正在优化后续的处理逻辑。"
+        ];
+
+        function sendMessage() {
+            const text = userInput.value.trim();
+            if (text === '') return;
+
+            // 添加用户消息
+            appendMessage(text, 'msg-user');
+            userInput.value = '';
+
+            // 模拟 AI 思考延迟
+            setTimeout(() => {
+                const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+                // 简单的关键词匹配（仅作演示）
+                let reply = randomResponse;
+                if(text.includes('你好') || text.includes('hello')) reply = "您好！很高兴与您交流。";
+                if(text.includes('是什么')) reply = "这涉及到复杂的计算模型，但本质上是数据特征的提取与概率预测。";
+                
+                appendMessage(reply, 'msg-ai');
+            }, 800);
+        }
+
+        function appendMessage(text, className) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${className}`;
+            msgDiv.textContent = text;
+            chatBox.appendChild(msgDiv);
+            // 自动滚动到底部
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>
