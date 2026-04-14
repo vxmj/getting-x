@@ -1,0 +1,39 @@
+name: 构建并推送 Docker 镜像
+
+on:
+  # 1. 设置触发器：当 'main' 分支有推送（push）时触发
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest # 2. 使用最新的 Ubuntu 运行环境
+    
+    # 3. 授予 Job 写入 GitHub Packages (GHCR) 的权限
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # 4. 签出你的代码
+      - name: 签出代码
+        uses: actions/checkout@v4
+
+      # 5. 登录到 GitHub 容器镜像库 (GHCR)
+      - name: 登录到 GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }} # 你的 GitHub 用户名
+          password: ${{ secrets.GITHUB_TOKEN }} # 自动生成的 Token
+
+      # 6. 构建并推送 Docker 镜像
+      - name: 构建并推送
+        uses: docker/build-push-action@v5
+        with:
+          context: . # 使用当前目录作为构建上下文
+          push: true # 构建后立即推送
+          # 7. (重要) 设置镜像的标签
+          # 格式为: ghcr.io/你的用户名/你的仓库名:latest
+          tags: ghcr.io/${{ github.repository }}:latest
