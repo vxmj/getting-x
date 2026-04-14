@@ -50,7 +50,7 @@ const TEXT_DECODER = new TextDecoder();
 // 3. 缓存订阅链接
 const SUB_STRING =
   Buffer.from(
-    `vless://${UUID}@${DOMAIN || "localhost"}:443?encryption=none&security=tls&sni=${DOMAIN || "localhost"}&fp=chrome&allowInsecure=1&type=xhttp&host=${DOMAIN || "localhost"}&path=${CFG.XPATH_ENC}&mode=packet-up#${NAME || "xhttp"}`,
+    `vless://${UUID}@${DOMAIN || "localhost"}:443?encryption=none&security=tls&sni=${DOMAIN || "localhost"}&fp=chrome&allowInsecure=0&type=xhttp&host=${DOMAIN || "localhost"}&path=${CFG.XPATH_ENC}&mode=packet-up#${NAME || "xhttp"}`,
   ).toString("base64") + "\n";
 
 // ═══════════════════════════════════════════════════════════
