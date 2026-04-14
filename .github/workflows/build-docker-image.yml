@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+# 全局环境变量：强制 Actions 使用 Node.js 24 运行，以消除 Node 20 弃用警告
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest # 2. 使用最新的 Ubuntu 运行环境
@@ -30,7 +34,7 @@ jobs:
 
       # 6. 构建并推送 Docker 镜像
       - name: 构建并推送
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v5
         with:
           context: . # 使用当前目录作为构建上下文
           push: true # 构建后立即推送
