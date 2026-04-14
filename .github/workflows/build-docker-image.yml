@@ -15,18 +15,15 @@ jobs:
 
     steps:
       - name: 签出代码
-        uses: actions/checkout@v4
+        # 升级到了全面支持 Node 24 的 v6 版本
+        uses: actions/checkout@v6 
 
-      # 1. 【新增】设置 Docker Buildx 引擎（这是使用 GHA 缓存的前提）
       - name: 设置 Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        # 升级到了原生支持 Node 24 的 v4 版本
+        uses: docker/setup-buildx-action@v4 
 
       - name: 登录到 GHCR
         uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }} 
-          password: ${{ secrets.GITHUB_TOKEN }} 
 
       - name: 构建并推送
         uses: docker/build-push-action@v7
@@ -34,6 +31,5 @@ jobs:
           context: . 
           push: true 
           tags: ghcr.io/${{ github.repository }}:latest
-          # 2. 【新增】魔法指令：开启 GitHub Actions 专属缓存
           cache-from: type=gha
           cache-to: type=gha,mode=max
