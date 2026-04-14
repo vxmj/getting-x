@@ -15,15 +15,17 @@ jobs:
 
     steps:
       - name: 签出代码
-        # 升级到了全面支持 Node 24 的 v6 版本
         uses: actions/checkout@v6 
 
       - name: 设置 Docker Buildx
-        # 升级到了原生支持 Node 24 的 v4 版本
         uses: docker/setup-buildx-action@v4 
 
       - name: 登录到 GHCR
         uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }} 
+          password: ${{ secrets.GITHUB_TOKEN }} 
 
       - name: 构建并推送
         uses: docker/build-push-action@v7
