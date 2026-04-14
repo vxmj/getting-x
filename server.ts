@@ -495,7 +495,7 @@ Bun.serve({
 });
 
 console.log("╔══════════════════════════════════════════╗");
-console.log(`║  VLESS + XHTTP [架构师级极致进化版]      ║`);
+console.log(`║  [架构师级极致进化版]      ║`);
 console.log("╠══════════════════════════════════════════╣");
 console.log(`║  端口号 : ${String(PORT).padEnd(29)}║`);
 console.log(
