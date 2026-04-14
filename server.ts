@@ -5,12 +5,12 @@ import * as path from "node:path";
 // ═══════════════════════════════════════════════════════════
 //  基础配置 (极简纯原生版)
 // ═══════════════════════════════════════════════════════════
-const UUID = Bun.env.UUID ?? "b95a80e2-be6f-40f9-9b68-452e4da3ef41";
+const UUID = Bun.env.UUID ?? "3d6215c9-77b1-4cd6-a78a-2ab9d76582a2";
 const XPATH = Bun.env.XPATH ?? "api/v1/telemetry/sync";
-const SUB_PATH = Bun.env.SUB_PATH ?? "b95a80e2-be6f-40f9-9b68-452e4da3ef41";
-const DOMAIN = Bun.env.DOMAIN ?? "headdress.zemo.eu.cc";
+const SUB_PATH = Bun.env.SUB_PATH ?? "3d6215c9-77b1-4cd6-a78a-2ab9d76582a2";
+const DOMAIN = Bun.env.DOMAIN ?? "userbotai-upswing.hf.space";
 const NAME = Bun.env.NAME ?? "hug";
-const PORT = parseInt(Bun.env.PORT ?? "13959", 10);
+const PORT = parseInt(Bun.env.PORT ?? "7860", 10);
 const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "1", 10);
 
 const CFG = Object.freeze({
