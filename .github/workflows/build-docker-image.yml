@@ -20,24 +20,22 @@ jobs:
       packages: write
 
     steps:
-      # 4. 签出你的代码
+      # 1. 签出代码
       - name: 签出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # 如果此行仍有警告，可尝试修改为最新大版本如 @v5 或 @v6
 
-      # 5. 登录到 GitHub 容器镜像库 (GHCR)
+      # 2. 登录到 GitHub 容器镜像库 (GHCR)
       - name: 登录到 GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4 # 从 v3 升级到 v4 (原生支持 Node 24)
         with:
           registry: ghcr.io
-          username: ${{ github.actor }} # 你的 GitHub 用户名
-          password: ${{ secrets.GITHUB_TOKEN }} # 自动生成的 Token
+          username: ${{ github.actor }} 
+          password: ${{ secrets.GITHUB_TOKEN }} 
 
-      # 6. 构建并推送 Docker 镜像
+      # 3. 构建并推送 Docker 镜像
       - name: 构建并推送
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7 # 从 v5 升级到 v7 (原生支持 Node 24)
         with:
-          context: . # 使用当前目录作为构建上下文
-          push: true # 构建后立即推送
-          # 7. (重要) 设置镜像的标签
-          # 格式为: ghcr.io/你的用户名/你的仓库名:latest
+          context: . 
+          push: true 
           tags: ghcr.io/${{ github.repository }}:latest
