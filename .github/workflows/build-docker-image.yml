@@ -30,7 +30,7 @@ jobs:
 
       # 6. 构建并推送 Docker 镜像
       - name: 构建并推送
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: . # 使用当前目录作为构建上下文
           push: true # 构建后立即推送
