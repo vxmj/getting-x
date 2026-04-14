@@ -27,7 +27,7 @@ const CFG = Object.freeze({
 // 【修复1】严格的环境变量逻辑判断 (true/1 才是开启)
 const USE_CUSTOM_DNS = (() => {
   const v = Bun.env.USE_CUSTOM_DNS?.toLowerCase();
-  return v === "true" || v === "1";
+//  return v === "true" || v === "1";
 })();
 
 const XHTTP_PATTERN = new RegExp(`^/${XPATH}/([^/?#]+)(?:/([0-9]+))?`);
