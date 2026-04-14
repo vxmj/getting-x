@@ -1,41 +1,39 @@
 name: 构建并推送 Docker 镜像
 
 on:
-  # 1. 设置触发器：当 'main' 分支有推送（push）时触发
   push:
     branches:
       - main
 
-# 全局环境变量：强制 Actions 使用 Node.js 24 运行，以消除 Node 20 弃用警告
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest # 2. 使用最新的 Ubuntu 运行环境
+    runs-on: ubuntu-latest
     
-    # 3. 授予 Job 写入 GitHub Packages (GHCR) 的权限
     permissions:
       contents: read
       packages: write
 
     steps:
-      # 1. 签出代码
       - name: 签出代码
-        uses: actions/checkout@v4 # 如果此行仍有警告，可尝试修改为最新大版本如 @v5 或 @v6
+        uses: actions/checkout@v4
 
-      # 2. 登录到 GitHub 容器镜像库 (GHCR)
+      # 1. 【新增】设置 Docker Buildx 引擎（这是使用 GHA 缓存的前提）
+      - name: 设置 Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: 登录到 GHCR
-        uses: docker/login-action@v4 # 从 v3 升级到 v4 (原生支持 Node 24)
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }} 
           password: ${{ secrets.GITHUB_TOKEN }} 
 
-      # 3. 构建并推送 Docker 镜像
       - name: 构建并推送
-        uses: docker/build-push-action@v7 # 从 v5 升级到 v7 (原生支持 Node 24)
+        uses: docker/build-push-action@v7
         with:
           context: . 
           push: true 
           tags: ghcr.io/${{ github.repository }}:latest
+          # 2. 【新增】魔法指令：开启 GitHub Actions 专属缓存
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
