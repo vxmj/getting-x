@@ -10,7 +10,7 @@ const SUB_PATH = Bun.env.SUB_PATH ?? "B95A80E2-BE6F-40F9-9B68-452E4DA3EF41";
 const DOMAIN = Bun.env.DOMAIN ?? ""; // 留空 → 启动时自动探测
 const NAME = Bun.env.NAME ?? "wispbyte";
 const PORT = parseInt(Bun.env.PORT ?? "13959", 10);
-const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "2", 10);
+const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "1", 10);
 
 // true / 1 才开启自定义 DNS
 const USE_CUSTOM_DNS = (() => {
