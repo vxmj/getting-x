@@ -3,7 +3,7 @@ import * as crypto from "node:crypto";
 const APP_KEY = Bun.env.APP_KEY ?? "B95A80E2-BE6F-40F9-9B68-452E4DA3EF41";
 const APP_PATH = Bun.env.APP_PATH ?? "api/v1/telemetry/sync";
 const PORT = parseInt(Bun.env.PORT ?? "13959", 10);
-const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "2", 10);
+const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "1", 10);
 
 const CFG = Object.freeze({
   MAX_BUFFERED: 100,
@@ -262,13 +262,13 @@ class Session {
           port: this.targetPort,
           socket: this.tcpHandlers,
         });
-        logger.info(`[+] TCP连通 ${header.hostname}:${header.port}`);
+        logger.info(`[+] T连 ${header.hostname}:${header.port}`);
       } else {
-        if (!CFG.ENABLE_UDP) throw new SilentError("UDP被禁用");
+        if (!CFG.ENABLE_UDP) throw new SilentError("U禁");
         this.remoteUdpSocket = await Bun.udpSocket({
           socket: this.udpHandlers,
         });
-        logger.info(`[+] UDP连通 ${header.hostname}:${header.port}`);
+        logger.info(`[+] U连 ${header.hostname}:${header.port}`);
       }
 
       try {
@@ -306,7 +306,7 @@ class Session {
     try {
       this.controller?.close();
     } catch {}
-    logger.info(`[-] 通道释放 [${this.id.slice(0, 6)}]`);
+    logger.info(`[-] 释放 [${this.id.slice(0, 6)}]`);
   }
 }
 
