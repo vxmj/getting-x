@@ -1,1039 +1,1029 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI智能平台 - 未来已来</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6366f1',
-                        secondary: '#8b5cf6',
-                        accent: '#06b6d4',
-                        dark: '#1e1b4b',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    animation: {
-                        'gradient-x': 'gradient-x 15s ease infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        'gradient-x': {
-                            '0%, 100%': {
-                                'background-position': '0% 50%'
-                            },
-                            '50%': {
-                                'background-position': '100% 50%'
-                            },
-                        },
-                        'float': {
-                            '0%, 100%': {
-                                transform: 'translateY(0)'
-                            },
-                            '50%': {
-                                transform: 'translateY(-20px)'
-                            },
-                        },
-                    },
-                }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NexusAI | 下一代智能平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            accent: {
+              500: '#8b5cf6',
+              600: '#7c3aed',
+            },
+            dark: {
+              900: '#0f172a',
+              800: '#1e293b',
+              700: '#334155',
             }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'gradient': 'gradient 12s ease infinite',
+            'slide-up': 'slideUp 0.6s ease-out forwards',
+            'slide-in-right': 'slideInRight 0.4s ease-out forwards',
+            'typing': 'typing 1.5s steps(3, end) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            gradient: {
+              '0%, 100%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideInRight: {
+              '0%': { opacity: '0', transform: 'translateX(20px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            },
+            typing: {
+              '0%, 100%': { opacity: '0.3' },
+              '50%': { opacity: '1' },
+            }
+          }
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .bg-glass {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-            }
-            .hero-gradient {
-                background: linear-gradient(-45deg, #6366f1, #8b5cf6, #06b6d4, #0ea5e9);
-                background-size: 400% 400%;
-                animation: gradient-x 15s ease infinite;
-            }
-            .mask-gradient {
-                mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-                -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-            }
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    * { scrollbar-width: thin; scrollbar-color: #0ea5e9 transparent; }
+    *::-webkit-scrollbar { width: 6px; height: 6px; }
+    *::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #0ea5e9, #8b5cf6); border-radius: 3px; }
+    .glass { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+    .gradient-text { background: linear-gradient(135deg, #38bdf8, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% 200%; animation: gradient 8s ease infinite; }
+    .hero-bg { background: radial-gradient(circle at 10% 20%, rgba(14,165,233,0.15) 0%, transparent 25%), radial-gradient(circle at 90% 80%, rgba(139,92,246,0.15) 0%, transparent 30%), radial-gradient(circle at 50% 50%, rgba(236,72,153,0.08) 0%, transparent 40%), linear-gradient(135deg, #0f172a 0%, #0c4a6e 100%); }
+    .card-hover { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .card-hover:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(14,165,233,0.25); }
+    .chat-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(14,165,233,0.5); }
+  </style>
 </head>
-<body class="font-sans bg-gray-50 text-gray-800 antialiased overflow-x-hidden">
-    <!-- 导航栏 -->
-    <header id="navbar" class="fixed w-full z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#" class="flex items-center space-x-2">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                    <i class="fa fa-brain text-white text-xl"></i>
-                </div>
-                <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">AI Platform</span>
+<body class="bg-dark-900 text-slate-100 font-sans antialiased">
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-700/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16 md:h-20">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-500 via-accent-500 to-pink-500 flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <span class="text-xl md:text-2xl font-bold gradient-text">NexusAI</span>
+        </div>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#features" class="text-slate-300 hover:text-white transition-colors font-medium" data-i18n="nav.features">功能</a>
+          <a href="#showcase" class="text-slate-300 hover:text-white transition-colors font-medium" data-i18n="nav.showcase">展示</a>
+          <a href="#pricing" class="text-slate-300 hover:text-white transition-colors font-medium" data-i18n="nav.pricing">定价</a>
+          <a href="#stats" class="text-slate-300 hover:text-white transition-colors font-medium" data-i18n="nav.stats">数据</a>
+          <a href="#contact" class="text-slate-300 hover:text-white transition-colors font-medium" data-i18n="nav.contact">联系</a>
+        </div>
+        <div class="flex items-center gap-4">
+          <button id="langToggle" class="px-4 py-2 rounded-xl bg-slate-700/50 hover:bg-slate-600/50 border border-slate-600/50 transition-all text-sm font-semibold">
+            <span id="langText">EN</span>
+          </button>
+          <a href="#demo" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-accent-600 hover:from-primary-400 hover:to-accent-500 transition-all shadow-lg shadow-primary-500/30 font-semibold">
+            <i class="fas fa-rocket"></i>
+            <span data-i18n="nav.cta">开始演示</span>
+          </a>
+          <button id="mobileMenuBtn" class="md:hidden p-2 rounded-xl hover:bg-slate-700/50 transition-colors">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden hidden glass border-t border-slate-700/30 px-4 py-4">
+      <div class="flex flex-col gap-3">
+        <a href="#features" class="text-slate-300 hover:text-white transition-colors py-2 font-medium" data-i18n="nav.features">功能</a>
+        <a href="#showcase" class="text-slate-300 hover:text-white transition-colors py-2 font-medium" data-i18n="nav.showcase">展示</a>
+        <a href="#pricing" class="text-slate-300 hover:text-white transition-colors py-2 font-medium" data-i18n="nav.pricing">定价</a>
+        <a href="#stats" class="text-slate-300 hover:text-white transition-colors py-2 font-medium" data-i18n="nav.stats">数据</a>
+        <a href="#contact" class="text-slate-300 hover:text-white transition-colors py-2 font-medium" data-i18n="nav.contact">联系</a>
+      </div>
+    </div>
+  </nav>  <!-- Hero Section -->
+  <section class="hero-bg pt-32 md:pt-44 pb-20 md:pb-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="animate-slide-up" style="animation-delay: 0.1s">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-700/40 border border-slate-600/50 mb-6">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            <span class="text-sm text-slate-300" data-i18n="hero.badge">2026 年全新 AI 引擎上线</span>
+          </div>
+          <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+            <span data-i18n="hero.title1">重新定义</span><br class="hidden sm:block"/>
+            <span class="gradient-text" data-i18n="hero.title2">智能交互体验</span>
+          </h1>
+          <p class="text-lg md:text-xl text-slate-300 mb-10 max-w-xl" data-i18n="hero.desc">
+            NexusAI 集成 GPT-4o、DALL-E 3、Claude 3 等先进模型，提供自然语言处理、图像生成、代码编写、数据分析等全方位 AI 服务，让创意与效率双向迸发。
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 mb-12">
+            <a href="#demo" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-600 hover:from-primary-400 hover:to-accent-500 transition-all shadow-2xl shadow-primary-500/30 text-lg font-bold">
+              <i class="fas fa-play-circle"></i>
+              <span data-i18n="hero.cta1">立即体验</span>
             </a>
-            
-            <!-- 桌面导航 -->
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="#features" class="text-gray-700 hover:text-primary transition-colors">功能</a>
-                <a href="#data" class="text-gray-700 hover:text-primary transition-colors">数据展示</a>
-                <a href="#pricing" class="text-gray-700 hover:text-primary transition-colors">价格</a>
-                <a href="#faq" class="text-gray-700 hover:text-primary transition-colors">常见问题</a>
-                <a href="#contact" class="text-gray-700 hover:text-primary transition-colors">联系我们</a>
-            </nav>
-            
-            <div class="flex items-center space-x-4">
-                <!-- 语言切换 -->
-                <div class="relative">
-                    <button id="langToggle" class="flex items-center space-x-1 px-3 py-2 rounded-full border border-gray-300 hover:border-primary transition-colors">
-                        <i class="fa fa-globe"></i>
-                        <span id="currentLang">中文</span>
-                        <i class="fa fa-chevron-down text-xs"></i>
-                    </button>
-                    <div id="langDropdown" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-colors" data-lang="zh">中文</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 transition-colors" data-lang="en">English</a>
-                    </div>
+            <a href="#showcase" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-slate-700/50 hover:bg-slate-600/50 border border-slate-600/50 transition-all text-lg font-semibold">
+              <i class="fas fa-play"></i>
+              <span data-i18n="hero.cta2">观看演示</span>
+            </a>
+          </div>
+          <div class="flex flex-wrap items-center gap-8">
+            <div class="flex items-center gap-3">
+              <div class="flex -space-x-3">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" class="w-10 h-10 rounded-full border-2 border-dark-900" alt="User 1">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" class="w-10 h-10 rounded-full border-2 border-dark-900" alt="User 2">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" class="w-10 h-10 rounded-full border-2 border-dark-900" alt="User 3">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face" class="w-10 h-10 rounded-full border-2 border-dark-900" alt="User 4">
+              </div>
+              <div>
+                <p class="font-semibold text-white"><span class="text-primary-400">100,000+</span> <span data-i18n="hero.users">用户信赖</span></p>
+                <div class="flex items-center gap-1 text-yellow-400 text-sm">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                  <span class="text-slate-400 ml-1">4.9/5</span>
                 </div>
-                
-                <a href="#contact" class="hidden md:block px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-1">
-                    开始使用
-                </a>
-                
-                <!-- 移动端菜单按钮 -->
-                <button id="mobileMenuBtn" class="md:hidden text-2xl">
-                    <i class="fa fa-bars"></i>
-                </button>
+              </div>
             </div>
-        </div>
-        
-        <!-- 移动端导航菜单 -->
-        <div id="mobileMenu" class="md:hidden bg-white shadow-lg rounded-b-2xl absolute w-full left-0 top-full transform -translate-y-full opacity-0 invisible transition-all duration-300 z-50">
-            <div class="container mx-auto px-4 py-6 flex flex-col space-y-4">
-                <a href="#features" class="text-lg py-2 border-b border-gray-100">功能</a>
-                <a href="#data" class="text-lg py-2 border-b border-gray-100">数据展示</a>
-                <a href="#pricing" class="text-lg py-2 border-b border-gray-100">价格</a>
-                <a href="#faq" class="text-lg py-2 border-b border-gray-100">常见问题</a>
-                <a href="#contact" class="text-lg py-2 border-b border-gray-100">联系我们</a>
-                <a href="#contact" class="mt-4 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-center">
-                    开始使用
-                </a>
+            <div class="h-12 w-px bg-slate-600/50 hidden sm:block"></div>
+            <div class="flex items-center gap-4">
+              <i class="fab fa-google text-2xl text-slate-400"></i>
+              <i class="fab fa-microsoft text-2xl text-slate-400"></i>
+              <i class="fab fa-amazon text-2xl text-slate-400"></i>
+              <i class="fab fa-apple text-2xl text-slate-400"></i>
             </div>
+          </div>
         </div>
-    </header>    <!-- 英雄区域 -->
-    <section class="hero-gradient pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
-        <!-- 装饰元素 -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
-            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-1/3 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="text-white">
-                    <div class="inline-block px-4 py-1 bg-white/20 rounded-full text-sm mb-6 backdrop-blur-sm">
-                        <i class="fa fa-rocket mr-2"></i>
-                        <span>下一代AI平台，现已发布</span>
-                    </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-shadow">
-                        释放<span class="text-accent">智能</span>潜能，<br>创造无限可能
-                    </h1>
-                    <p class="text-lg md:text-xl text-white/90 mb-8 max-w-lg">
-                        我们的AI平台为企业提供全方位的智能化解决方案，助您在数字时代保持领先。
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#contact" class="px-8 py-4 bg-white text-primary rounded-full font-semibold text-center hover:bg-gray-100 transition-all transform hover:-translate-y-1 shadow-xl">
-                            免费试用
-                        </a>
-                        <a href="#features" class="px-8 py-4 bg-white/10 text-white border border-white/30 rounded-full font-semibold text-center hover:bg-white/20 transition-all backdrop-blur-sm">
-                            了解更多
-                        </a>
-                    </div>
-                    
-                    <div class="mt-12 flex items-center gap-4">
-                        <div class="flex -space-x-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 border-2 border-white"></div>
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-pink-600 border-2 border-white"></div>
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-400 to-green-600 border-2 border-white"></div>
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 border-2 border-white"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center text-yellow-300">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-half-o"></i>
-                                <span class="text-white ml-2">4.9/5</span>
-                            </div>
-                            <p class="text-sm text-white/80">来自 2,500+ 用户的信任</p>
-                        </div>
-                    </div>
+        <div class="relative animate-slide-up" style="animation-delay: 0.3s">
+          <div class="absolute -top-10 -left-10 w-72 h-72 bg-primary-500/20 rounded-full blur-3xl"></div>
+          <div class="absolute -bottom-10 -right-10 w-80 h-80 bg-accent-500/20 rounded-full blur-3xl"></div>
+          <div class="relative glass rounded-3xl border border-slate-700/40 p-6 shadow-2xl">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-700/40">
+              <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <span class="text-sm text-slate-400" data-i18n="hero.terminal">NexusAI Studio</span>
+            </div>
+            <div class="space-y-4">
+              <div class="flex gap-3">
+                <span class="text-primary-400 font-semibold">$</span>
+                <div class="text-slate-200">
+                  <p><span class="text-accent-400">nexusai</span> generate --type code --lang python</p>
+                  <p class="text-sm text-slate-400 mt-2" data-i18n="hero.terminal.task">任务：构建实时数据分析仪表盘</p>
                 </div>
-                
-                <div class="relative hidden md:block">
-                    <div class="relative z-10 animate-float">
-                        <img src="https://picsum.photos/600/500?random=1" alt="AI平台界面" class="rounded-2xl shadow-2xl">
-                        
-                        <!-- 浮动卡片 -->
-                        <div class="absolute -top-8 -left-8 bg-white p-4 rounded-xl shadow-lg">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                                    <i class="fa fa-check text-green-500 text-xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">准确率提升</p>
-                                    <p class="text-xl font-bold text-gray-800">+94%</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-xl shadow-lg">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                                    <i class="fa fa-clock-o text-blue-500 text-xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">效率提升</p>
-                                    <p class="text-xl font-bold text-gray-800">5x</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 背景装饰 -->
-                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-primary/30 to-secondary/30 rounded-full blur-3xl -z-10"></div>
-                </div>
+              </div>
+              <div class="bg-slate-800/60 rounded-xl p-4 font-mono text-sm">
+                <p><span class="text-green-400">✅</span> 导入必要库</p>
+                <p><span class="text-green-400">✅</span> 连接数据源</p>
+                <p><span class="text-yellow-400">⏳</span> 生成可视化组件...</p>
+                <p class="mt-2"><span class="text-primary-400">⏱️</span> <span data-i18n="hero.terminal.time">预计完成时间：</span>2.3s</p>
+              </div>
             </div>
-            
-            <!-- 合作伙伴 -->
-            <div class="mt-20">
-                <p class="text-center text-white/80 mb-8">受到全球领先企业的信任</p>
-                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-                    <div class="text-white/60 text-2xl font-bold">Google</div>
-                    <div class="text-white/60 text-2xl font-bold">Microsoft</div>
-                    <div class="text-white/60 text-2xl font-bold">Amazon</div>
-                    <div class="text-white/60 text-2xl font-bold">Apple</div>
-                    <div class="text-white/60 text-2xl font-bold">Meta</div>
-                </div>
+          </div>
+          <div class="absolute -top-4 right-4 glass rounded-2xl border border-slate-700/40 p-4 shadow-xl animate-float">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
+                <i class="fas fa-chart-line text-white text-xl"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-400" data-i18n="hero.float1">效率提升</p>
+                <p class="text-xl font-bold text-white">+420%</p>
+              </div>
             </div>
+          </div>
+          <div class="absolute -bottom-4 left-4 glass rounded-2xl border border-slate-700/40 p-4 shadow-xl animate-float" style="animation-delay: 2s">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
+                <i class="fas fa-image text-white text-xl"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-400" data-i18n="hero.float2">图像生成</p>
+                <p class="text-xl font-bold text-white">50K+/月</p>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <!-- 波浪底部 -->
-        <div class="absolute bottom-0 left-0 w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" class="w-full h-auto">
-                <path fill="#f9fafb" fill-opacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
-            </svg>
-        </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- 功能特性 -->
-    <section id="features" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">强大的AI功能</h2>
-                <p class="text-gray-600 text-lg">我们的平台提供全方位的AI功能，满足您的各种需求</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 功能卡片1 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center mb-6">
-                        <i class="fa fa-magic text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">自然语言处理</h3>
-                    <p class="text-gray-600">先进的NLP技术，支持多语言文本分析、情感识别和自动摘要。</p>
-                </div>
-                
-                <!-- 功能卡片2 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center mb-6">
-                        <i class="fa fa-eye text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">计算机视觉</h3>
-                    <p class="text-gray-600">强大的图像识别、物体检测和图像生成能力，适用于各种场景。</p>
-                </div>
-                
-                <!-- 功能卡片3 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center mb-6">
-                        <i class="fa fa-line-chart text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">预测分析</h3>
-                    <p class="text-gray-600">基于大数据的智能预测模型，帮助您做出更明智的决策。</p>
-                </div>
-                
-                <!-- 功能卡片4 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-center mb-6">
-                        <i class="fa fa-robot text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">智能助手</h3>
-                    <p class="text-gray-600">24/7全天候智能助手，提供个性化服务和即时响应。</p>
-                </div>
-                
-                <!-- 功能卡片5 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center mb-6">
-                        <i class="fa fa-cogs text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">自动化流程</h3>
-                    <p class="text-gray-600">智能自动化工作流程，提高效率，减少人为错误。</p>
-                </div>
-                
-                <!-- 功能卡片6 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-cyan-500 to-cyan-600 flex items-center justify-center mb-6">
-                        <i class="fa fa-shield text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">安全保障</h3>
-                    <p class="text-gray-600">企业级安全保障，保护您的数据和隐私安全。</p>
-                </div>
-            </div>
+  <!-- Features Section -->
+  <section id="features" class="py-24 bg-dark-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16 animate-slide-up">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-400 text-sm font-semibold mb-4" data-i18n="features.subtitle">核心能力</span>
+        <h2 class="text-3xl md:text-5xl font-bold mb-6" data-i18n="features.title">全方位 AI 解决方案</h2>
+        <p class="text-lg text-slate-400 max-w-3xl mx-auto" data-i18n="features.desc">
+          从日常办公到专业开发，NexusAI 覆盖所有场景，为您的工作流注入强大智能动力
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center mb-6">
+            <i class="fas fa-comments text-2xl gradient-text"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4" data-i18n="features.f1.title">自然语言对话</h3>
+          <p class="text-slate-400 mb-6" data-i18n="features.f1.desc">
+            支持上下文理解的多轮对话，能回答专业问题、撰写文章、翻译文本、编写邮件等，效率提升十倍以上。
+          </p>
+          <a href="#" class="text-primary-400 font-semibold hover:text-primary-300 transition-colors flex items-center gap-2">
+            <span data-i18n="features.learn">了解更多</span><i class="fas fa-arrow-right"></i>
+          </a>
         </div>
-    </section>
-
-    <!-- 数据展示 -->
-    <section id="data" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">数据驱动的AI性能</h2>
-                <p class="text-gray-600 text-lg">看看我们的AI平台如何帮助企业提升业绩</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-8 mb-16">
-                <!-- 图表1 -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg">
-                    <h3 class="text-xl font-bold mb-4">性能提升趋势</h3>
-                    <div class="h-80">
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                </div>
-                
-                <!-- 图表2 -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg">
-                    <h3 class="text-xl font-bold mb-4">用户分布</h3>
-                    <div class="h-80">
-                        <canvas id="userDistributionChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <!-- 数据卡片1 -->
-                <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 hover:shadow-lg transition-all">
-                    <div class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-2">94%</div>
-                    <p class="text-gray-600">准确率提升</p>
-                </div>
-                
-                <!-- 数据卡片2 -->
-                <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 hover:shadow-lg transition-all">
-                    <div class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-2">5x</div>
-                    <p class="text-gray-600">效率提升</p>
-                </div>
-                
-                <!-- 数据卡片3 -->
-                <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 hover:shadow-lg transition-all">
-                    <div class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-2">2.5K+</div>
-                    <p class="text-gray-600">企业客户</p>
-                </div>
-                
-                <!-- 数据卡片4 -->
-                <div class="text-center p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 hover:shadow-lg transition-all">
-                    <div class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-2">24/7</div>
-                    <p class="text-gray-600">全天候支持</p>
-                </div>
-            </div>
+        <!-- Feature 2 -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-teal-500/20 flex items-center justify-center mb-6">
+            <i class="fas fa-palette text-2xl text-green-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4" data-i18n="features.f2.title">图像与视频生成</h3>
+          <p class="text-slate-400 mb-6" data-i18n="features.f2.desc">
+            文字转图像、图像编辑、风格迁移、视频生成，支持多种艺术风格，从草图到专业作品一键完成。
+          </p>
+          <a href="#" class="text-green-400 font-semibold hover:text-green-300 transition-colors flex items-center gap-2">
+            <span data-i18n="features.learn">了解更多</span><i class="fas fa-arrow-right"></i>
+          </a>
         </div>
-    </section>
-
-    <!-- 产品展示 -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">直观的用户界面</h2>
-                <p class="text-gray-600 text-lg">简洁易用的设计，让每个人都能轻松使用AI</p>
-            </div>
-            
-            <div class="relative">
-                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
-                    <div class="flex items-center gap-2 bg-gray-100 px-4 py-3">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
-                    <div class="p-4">
-                        <img src="https://picsum.photos/1200/700?random=2" alt="AI平台界面" class="w-full rounded-xl">
-                    </div>
-                </div>
-                
-                <!-- 浮动元素 -->
-                <div class="hidden md:block absolute -top-10 -right-10 bg-white p-5 rounded-xl shadow-lg animate-float">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                            <i class="fa fa-bolt text-green-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">响应速度</p>
-                            <p class="text-xl font-bold text-gray-800">120ms</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="hidden md:block absolute -bottom-10 -left-10 bg-white p-5 rounded-xl shadow-lg animate-float" style="animation-delay: 1s;">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                            <i class="fa fa-database text-purple-500 text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">数据处理</p>
-                            <p class="text-xl font-bold text-gray-800">10TB+</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Feature 3 -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center mb-6">
+            <i class="fas fa-code text-2xl text-yellow-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4" data-i18n="features.f3.title">智能代码助手</h3>
+          <p class="text-slate-400 mb-6" data-i18n="features.f3.desc">
+            支持 50+ 编程语言，代码补全、错误修复、重构建议、文档生成，让编程效率提升 300%。
+          </p>
+          <a href="#" class="text-yellow-400 font-semibold hover:text-yellow-300 transition-colors flex items-center gap-2">
+            <span data-i18n="features.learn">了解更多</span><i class="fas fa-arrow-right"></i>
+          </a>
         </div>
-    </section>
-
-    <!-- 客户评价 -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">客户的声音</h2>
-                <p class="text-gray-600 text-lg">看看我们的客户怎么说</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- 评价卡片1 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all">
-                    <div class="flex items-center text-yellow-400 mb-4">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <p class="text-gray-600 mb-6">"这个AI平台彻底改变了我们的工作方式，效率提升了5倍，准确率也大大提高。"</p>
-                    <div class="flex items-center">
-                        <img src="https://picsum.photos/50/50?random=10" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-bold">李明</h4>
-                            <p class="text-gray-500 text-sm">某科技公司 CEO</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 评价卡片2 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all">
-                    <div class="flex items-center text-yellow-400 mb-4">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <p class="text-gray-600 mb-6">"我们尝试过多种AI解决方案，但这个平台是最易用且功能最强大的。强烈推荐！"</p>
-                    <div class="flex items-center">
-                        <img src="https://picsum.photos/50/50?random=11" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-bold">张红</h4>
-                            <p class="text-gray-500 text-sm">某电商平台 产品总监</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 评价卡片3 -->
-                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all">
-                    <div class="flex items-center text-yellow-400 mb-4">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-o"></i>
-                    </div>
-                    <p class="text-gray-600 mb-6">"客户服务团队非常专业，响应迅速。平台的预测分析功能帮我们节省了大量成本。"</p>
-                    <div class="flex items-center">
-                        <img src="https://picsum.photos/50/50?random=12" alt="用户头像" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-bold">王强</h4>
-                            <p class="text-gray-500 text-sm">某制造企业 运营总监</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Feature 4 -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 flex items-center justify-center mb-6">
+            <i class="fas fa-chart-bar text-2xl text-pink-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4" data-i18n="features.f4.title">数据分析与可视化</h3>
+          <p class="text-slate-400 mb-6" data-i18n="features.f4.desc">
+            上传数据集即可自动清洗、分析、生成图表和报告，支持 Excel、CSV、SQL 等多种格式。
+          </p>
+          <a href="#" class="text-pink-400 font-semibold hover:text-pink-300 transition-colors flex items-center gap-2">
+            <span data-i18n="features.learn">了解更多</span><i class="fas fa-arrow-right"></i>
+          </a>
         </div>
-    </section>
-
-    <!-- 价格方案 -->
-    <section id="pricing" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">灵活的价格方案</h2>
-                <p class="text-gray-600 text-lg">选择最适合您的方案，开始AI之旅</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- 基础版 -->
-                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="p-8">
-                        <h3 class="text-xl font-bold mb-2">基础版</h3>
-                        <p class="text-gray-500 mb-6">适合个人和小型团队</p>
-                        <div class="mb-6">
-                            <span class="text-4xl font-bold">¥99</span>
-                            <span class="text-gray-500">/月</span>
-                        </div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>5个项目</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>基础NLP功能</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>1000次API调用/月</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>邮件支持</span>
-                            </li>
-                            <li class="flex items-center text-gray-400">
-                                <i class="fa fa-times text-gray-300 mr-2"></i>
-                                <span>高级分析</span>
-                            </li>
-                            <li class="flex items-center text-gray-400">
-                                <i class="fa fa-times text-gray-300 mr-2"></i>
-                                <span>优先客服</span>
-                            </li>
-                        </ul>
-                        <a href="#contact" class="block w-full py-3 text-center border border-primary text-primary rounded-full font-semibold hover:bg-primary hover:text-white transition-colors">
-                            开始使用
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- 专业版 -->
-                <div class="bg-gradient-to-b from-primary to-secondary rounded-2xl overflow-hidden shadow-xl transform scale-105 relative z-10">
-                    <div class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                        最受欢迎
-                    </div>
-                    <div class="p-8 text-white">
-                        <h3 class="text-xl font-bold mb-2">专业版</h3>
-                        <p class="text-white/80 mb-6">适合成长型企业</p>
-                        <div class="mb-6">
-                            <span class="text-4xl font-bold">¥299</span>
-                            <span class="text-white/80">/月</span>
-                        </div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-white mr-2"></i>
-                                <span>无限项目</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-white mr-2"></i>
-                                <span>全部NLP功能</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-white mr-2"></i>
-                                <span>100,000次API调用/月</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-white mr-2"></i>
-                                <span>24/7在线支持</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-white mr-2"></i>
-                                <span>高级分析</span>
-                            </li>
-                            <li class="flex items-center text-white/60">
-                                <i class="fa fa-times text-white/40 mr-2"></i>
-                                <span>专属客户经理</span>
-                            </li>
-                        </ul>
-                        <a href="#contact" class="block w-full py-3 text-center bg-white text-primary rounded-full font-semibold hover:bg-gray-100 transition-colors">
-                            立即升级
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- 企业版 -->
-                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
-                    <div class="p-8">
-                        <h3 class="text-xl font-bold mb-2">企业版</h3>
-                        <p class="text-gray-500 mb-6">适合大型企业</p>
-                        <div class="mb-6">
-                            <span class="text-4xl font-bold">定制</span>
-                        </div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>无限项目</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>全部AI功能</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>无限API调用</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>专属技术支持</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>高级分析</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa fa-check text-green-500 mr-2"></i>
-                                <span>专属客户经理</span>
-                            </li>
-                        </ul>
-                        <a href="#contact" class="block w-full py-3 text-center border border-primary text-primary rounded-full font-semibold hover:bg-primary hover:text-white transition-colors">
-                            联系销售
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <!-- Feature 5 -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-violet-500/20 flex items-center justify-center mb-6">
+            <i class="fas fa-microphone text-2xl text-purple-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4" data-i18n="features.f5.title">语音与视频理解</h3>
+          <p class="text-slate-400 mb-6" data-i18n="features.f5.desc">
+            语音转录、翻译、摘要生成，视频内容分析、字幕生成、关键帧提取，支持 100+ 语言。
+          </p>
+          <a href="#" class="text-purple-400 font-semibold hover:text-purple-300 transition-colors flex items-center gap-2">
+            <span data-i18n="features.learn">了解更多</span><i class="fas fa-arrow-right"></i>
+          </a>
         </div>
-    </section>
-
-    <!-- 常见问题 -->
-    <section id="faq" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">常见问题</h2>
-                <p class="text-gray-600 text-lg">解答您可能有的疑问</p>
-            </div>
-            
-            <div class="max-w-3xl mx-auto space-y-4">
-                <!-- FAQ项1 -->
-                <div class="bg-gray-50 rounded-xl overflow-hidden">
-                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-semibold">
-                        <span>如何开始使用AI平台？</span>
-                        <i class="fa fa-plus text-primary"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-gray-600">只需注册账号，选择适合您的价格方案，即可立即开始使用我们的AI平台。我们提供详细的文档和教程，帮助您快速上手。</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ项2 -->
-                <div class="bg-gray-50 rounded-xl overflow-hidden">
-                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-semibold">
-                        <span>平台支持哪些编程语言？</span>
-                        <i class="fa fa-plus text-primary"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-gray-600">我们的API支持所有主流编程语言，包括Python、JavaScript、Java、Go、PHP等。我们还提供多种语言的SDK，方便开发者快速集成。</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ项3 -->
-                <div class="bg-gray-50 rounded-xl overflow-hidden">
-                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-semibold">
-                        <span>数据安全性如何保障？</span>
-                        <i class="fa fa-plus text-primary"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-gray-600">我们采用企业级安全措施，包括数据加密、访问控制、安全审计等，确保您的数据安全。我们也符合GDPR等国际数据保护标准。</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ项4 -->
-                <div class="bg-gray-50 rounded-xl overflow-hidden">
-                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-semibold">
-                        <span>可以随时升级或降级套餐吗？</span>
-                        <i class="fa fa-plus text-primary"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-gray-600">是的，您可以随时在账户设置中升级或降级您的套餐。升级立即生效，降级将在当前计费周期结束后生效。</p>
-                    </div>
-                </div>
-                
-                <!-- FAQ项5 -->
-                <div class="bg-gray-50 rounded-xl overflow-hidden">
-                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left font-semibold">
-                        <span>是否提供定制化服务？</span>
-                        <i class="fa fa-plus text-primary"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-gray-600">是的，我们为企业版客户提供定制化服务，包括模型训练、功能定制、私有化部署等。请联系我们的销售团队了解详情。</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Feature 6 -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center mb-6">
+            <i class="fas fa-plug text-2xl text-cyan-400"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-4" data-i18n="features.f6.title">API 与插件集成</h3>
+          <p class="text-slate-400 mb-6" data-i18n="features.f6.desc">
+            提供简单易用的 API 接口，支持与 Slack、Discord、Notion 等工具无缝集成，自定义工作流。
+          </p>
+          <a href="#" class="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors flex items-center gap-2">
+            <span data-i18n="features.learn">了解更多</span><i class="fas fa-arrow-right"></i>
+          </a>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- 联系我们 -->
-    <section id="contact" class="py-20 bg-gradient-to-br from-primary to-secondary text-white">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">准备好开始了吗？</h2>
-                    <p class="text-white/90 text-lg mb-8">
-                        联系我们，了解更多关于AI平台如何帮助您的企业实现数字化转型。
-                    </p>
-                    
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                                <i class="fa fa-map-marker text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold mb-1">地址</h4>
-                                <p class="text-white/80">北京市朝阳区科技园区88号</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                                <i class="fa fa-envelope text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold mb-1">邮箱</h4>
-                                <p class="text-white/80">contact@aiplatform.com</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                                <i class="fa fa-phone text-xl"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold mb-1">电话</h4>
-                                <p class="text-white/80">+86 10 8888 8888</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-10 flex space-x-4">
-                        <a href="#" class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
-                            <i class="fa fa-weixin text-xl"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
-                            <i class="fa fa-weibo text-xl"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
-                            <i class="fa fa-github text-xl"></i>
-                        </a>
-                        <a href="#" class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
-                            <i class="fa fa-linkedin text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-2xl p-8 text-gray-800 shadow-2xl">
-                    <h3 class="text-2xl font-bold mb-6">联系我们</h3>
-                    <form>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 mb-2" for="name">姓名</label>
-                            <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="请输入您的姓名">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-gray-700 mb-2" for="email">邮箱</label>
-                            <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="请输入您的邮箱">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-gray-700 mb-2" for="message">留言</label>
-                            <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="请输入您的留言"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-1">
-                            发送消息
-                        </button>
-                    </form>
-                </div>
-            </div>
+  <!-- Showcase Section -->
+  <section id="showcase" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-sm font-semibold mb-4" data-i18n="showcase.subtitle">成功案例</span>
+        <h2 class="text-3xl md:text-5xl font-bold mb-6" data-i18n="showcase.title">用户如何使用 NexusAI</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Case 1 -->
+        <div class="card-hover group rounded-3xl overflow-hidden border border-slate-700/40 bg-dark-800">
+          <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400&fit=crop" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" alt="Marketing">
+          <div class="p-6">
+            <span class="text-xs text-primary-400 font-semibold uppercase tracking-wider" data-i18n="showcase.c1.tag">营销</span>
+            <h3 class="text-lg font-bold mt-2 mb-2" data-i18n="showcase.c1.title">社交媒体内容创作</h3>
+            <p class="text-slate-400 text-sm" data-i18n="showcase.c1.desc">某跨国公司市场部使用 NexusAI 生成 12 种语言的社交媒体内容，覆盖全球市场。</p>
+          </div>
         </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="bg-dark text-white py-16">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8 mb-12">
-                <div>
-                    <a href="#" class="flex items-center space-x-2 mb-6">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                            <i class="fa fa-brain text-white text-xl"></i>
-                        </div>
-                        <span class="text-2xl font-bold">AI Platform</span>
-                    </a>
-                    <p class="text-gray-400 mb-6">
-                        下一代AI平台，为企业提供全方位的智能化解决方案。
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fa fa-weixin text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fa fa-weibo text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fa fa-github text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fa fa-linkedin text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-bold mb-6">产品</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">功能</a></li>
-                        <li><a href="#pricing" class="text-gray-400 hover:text-white transition-colors">价格</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">案例</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">文档</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">API</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-bold mb-6">公司</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">关于我们</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">博客</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">招聘</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">合作伙伴</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-bold mb-6">订阅更新</h4>
-                    <p class="text-gray-400 mb-4">
-                        订阅我们的新闻邮件，获取最新产品动态和AI技术资讯。
-                    </p>
-                    <form class="flex">
-                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-3 rounded-l-lg bg-gray-800 border border-gray-700 focus:border-primary focus:outline-none flex-grow">
-                        <button type="submit" class="px-4 py-3 bg-gradient-to-r from-primary to-secondary rounded-r-lg hover:opacity-90 transition-opacity">
-                            <i class="fa fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">
-                    &copy; 2026 AI Platform. 保留所有权利。
-                </p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">隐私政策</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">服务条款</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie政策</a>
-                </div>
-            </div>
+        <!-- Case 2 -->
+        <div class="card-hover group rounded-3xl overflow-hidden border border-slate-700/40 bg-dark-800">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" alt="Finance">
+          <div class="p-6">
+            <span class="text-xs text-green-400 font-semibold uppercase tracking-wider" data-i18n="showcase.c2.tag">金融</span>
+            <h3 class="text-lg font-bold mt-2 mb-2" data-i18n="showcase.c2.title">投资报告自动化</h3>
+            <p class="text-slate-400 text-sm" data-i18n="showcase.c2.desc">资产管理公司利用 NexusAI 每天生成 500+ 份个性化投资分析报告，节省 80% 时间。</p>
+          </div>
         </div>
-    </footer>
+        <!-- Case 3 -->
+        <div class="card-hover group rounded-3xl overflow-hidden border border-slate-700/40 bg-dark-800">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" alt="Education">
+          <div class="p-6">
+            <span class="text-xs text-yellow-400 font-semibold uppercase tracking-wider" data-i18n="showcase.c3.tag">教育</span>
+            <h3 class="text-lg font-bold mt-2 mb-2" data-i18n="showcase.c3.title">智能辅导系统</h3>
+            <p class="text-slate-400 text-sm" data-i18n="showcase.c3.desc">在线教育平台集成 NexusAI 作为 AI 助教，提供 24/7 答疑和个性化学习计划。</p>
+          </div>
+        </div>
+        <!-- Case 4 -->
+        <div class="card-hover group rounded-3xl overflow-hidden border border-slate-700/40 bg-dark-800">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" alt="Development">
+          <div class="p-6">
+            <span class="text-xs text-purple-400 font-semibold uppercase tracking-wider" data-i18n="showcase.c4.tag">开发</span>
+            <h3 class="text-lg font-bold mt-2 mb-2" data-i18n="showcase.c4.title">快速原型开发</h3>
+            <p class="text-slate-400 text-sm" data-i18n="showcase.c4.desc">初创团队使用 NexusAI 生成 MVP 代码，从想法到上线仅用 2 周时间。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- 返回顶部按钮 -->
-    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary text-white flex items-center justify-center shadow-lg opacity-0 invisible transition-all transform hover:scale-110">
-        <i class="fa fa-arrow-up"></i>
-    </button>
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-24 bg-dark-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-sm font-semibold mb-4" data-i18n="pricing.subtitle">灵活定价</span>
+        <h2 class="text-3xl md:text-5xl font-bold mb-6" data-i18n="pricing.title">选择适合您的方案</h2>
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto" data-i18n="pricing.desc">
+          从个人用户到企业级部署，我们提供多种方案满足不同需求，所有方案均支持 7 天无理由退款
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        <!-- Free Plan -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8 flex flex-col">
+          <h3 class="text-2xl font-bold mb-2" data-i18n="pricing.free.title">免费版</h3>
+          <p class="text-slate-400 mb-6" data-i18n="pricing.free.desc">适合个人体验和轻量使用</p>
+          <div class="mb-8">
+            <span class="text-5xl font-bold">$0</span>
+            <span class="text-slate-400">/ <span data-i18n="pricing.month">月</span></span>
+          </div>
+          <ul class="space-y-4 mb-10 flex-grow">
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-green-400"></i><span data-i18n="pricing.free.l1">每天 50 次对话请求</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-green-400"></i><span data-i18n="pricing.free.l2">GPT-3.5 Turbo 模型</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-green-400"></i><span data-i18n="pricing.free.l3">每天 5 张图像生成</span></li>
+            <li class="flex items-center gap-3 text-slate-500"><i class="fas fa-times"></i><span data-i18n="pricing.free.l4">代码助手（限制功能）</span></li>
+            <li class="flex items-center gap-3 text-slate-500"><i class="fas fa-times"></i><span data-i18n="pricing.free.l5">API 访问权限</span></li>
+          </ul>
+          <button class="w-full py-4 rounded-2xl border-2 border-slate-600 hover:border-slate-500 transition-all font-semibold" data-i18n="pricing.free.btn">开始使用</button>
+        </div>
+        <!-- Pro Plan -->
+        <div class="card-hover glass rounded-3xl border-2 border-primary-500 p-8 flex flex-col relative shadow-2xl shadow-primary-500/20">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-600 text-white text-sm font-bold" data-i18n="pricing.popular">最受欢迎</div>
+          <h3 class="text-2xl font-bold mb-2" data-i18n="pricing.pro.title">专业版</h3>
+          <p class="text-slate-400 mb-6" data-i18n="pricing.pro.desc">适合专业人士和小型团队</p>
+          <div class="mb-8">
+            <span class="text-5xl font-bold">$29</span>
+            <span class="text-slate-400">/ <span data-i18n="pricing.month">月</span></span>
+          </div>
+          <ul class="space-y-4 mb-10 flex-grow">
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-primary-400"></i><span data-i18n="pricing.pro.l1">无限对话请求</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-primary-400"></i><span data-i18n="pricing.pro.l2">GPT-4o + Claude 3.5 模型</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-primary-400"></i><span data-i18n="pricing.pro.l3">每天 200 张图像生成</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-primary-400"></i><span data-i18n="pricing.pro.l4">完整代码助手功能</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-primary-400"></i><span data-i18n="pricing.pro.l5">API 访问（10K tokens/天）</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-primary-400"></i><span data-i18n="pricing.pro.l6">优先客服支持</span></li>
+          </ul>
+          <button class="w-full py-4 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-600 hover:from-primary-400 hover:to-accent-500 transition-all font-bold shadow-lg" data-i18n="pricing.pro.btn">立即订阅</button>
+        </div>
+        <!-- Enterprise Plan -->
+        <div class="card-hover glass rounded-3xl border border-slate-700/40 p-8 flex flex-col">
+          <h3 class="text-2xl font-bold mb-2" data-i18n="pricing.enterprise.title">企业版</h3>
+          <p class="text-slate-400 mb-6" data-i18n="pricing.enterprise.desc">适合中大型企业，定制化服务</p>
+          <div class="mb-8">
+            <span class="text-5xl font-bold" data-i18n="pricing.enterprise.price">定制</span>
+          </div>
+          <ul class="space-y-4 mb-10 flex-grow">
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-accent-400"></i><span data-i18n="pricing.enterprise.l1">所有专业版功能</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-accent-400"></i><span data-i18n="pricing.enterprise.l2">无限 API 访问</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-accent-400"></i><span data-i18n="pricing.enterprise.l3">私有部署选项</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-accent-400"></i><span data-i18n="pricing.enterprise.l4">专属客户经理</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-accent-400"></i><span data-i18n="pricing.enterprise.l5">SLA 保障（99.99%）</span></li>
+            <li class="flex items-center gap-3 text-slate-300"><i class="fas fa-check text-accent-400"></i><span data-i18n="pricing.enterprise.l6">定制化模型训练</span></li>
+          </ul>
+          <button class="w-full py-4 rounded-2xl border-2 border-accent-500 hover:bg-accent-500/20 transition-all font-semibold" data-i18n="pricing.enterprise.btn">联系销售</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        // 导航栏滚动效果
-        const navbar = document.getElementById('navbar');
-        const backToTop = document.getElementById('backToTop');
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-white', 'shadow-md', 'py-2');
-                navbar.classList.remove('py-4');
-                backToTop.classList.remove('opacity-0', 'invisible');
-                backToTop.classList.add('opacity-100', 'visible');
-            } else {
-                navbar.classList.remove('bg-white', 'shadow-md', 'py-2');
-                navbar.classList.add('py-4');
-                backToTop.classList.add('opacity-0', 'invisible');
-                backToTop.classList.remove('opacity-100', 'visible');
-            }
+  <!-- Stats Section -->
+  <section id="stats" class="py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass rounded-3xl border border-slate-700/40 p-12 md:p-16">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-4xl md:text-6xl font-bold gradient-text mb-3">100K+</div>
+            <p class="text-slate-400" data-i18n="stats.s1">活跃用户</p>
+          </div>
+          <div>
+            <div class="text-4xl md:text-6xl font-bold gradient-text mb-3">5B+</div>
+            <p class="text-slate-400" data-i18n="stats.s2">处理 tokens</p>
+          </div>
+          <div>
+            <div class="text-4xl md:text-6xl font-bold gradient-text mb-3">99.9%</div>
+            <p class="text-slate-400" data-i18n="stats.s3">服务可用性</p>
+          </div>
+          <div>
+            <div class="text-4xl md:text-6xl font-bold gradient-text mb-3">150+</div>
+            <p class="text-slate-400" data-i18n="stats.s4">覆盖国家</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 bg-dark-800/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-semibold mb-4" data-i18n="contact.subtitle">联系我们</span>
+        <h2 class="text-3xl md:text-5xl font-bold mb-6" data-i18n="contact.title">有问题？随时联系</h2>
+      </div>
+      <form class="glass rounded-3xl border border-slate-700/40 p-8 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-300 mb-2" data-i18n="contact.name">姓名</label>
+            <input type="text" class="w-full px-4 py-3 rounded-xl bg-slate-800/70 border border-slate-600/50 text-white placeholder-slate-500 focus:outline-none focus:border-primary-500 transition-colors" placeholder="John Doe">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-300 mb-2" data-i18n="contact.email">邮箱</label>
+            <input type="email" class="w-full px-4 py-3 rounded-xl bg-slate-800/70 border border-slate-600/50 text-white placeholder-slate-500 focus:outline-none focus:border-primary-500 transition-colors" placeholder="john@example.com">
+          </div>
+        </div>
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-slate-300 mb-2" data-i18n="contact.subject">主题</label>
+          <input type="text" class="w-full px-4 py-3 rounded-xl bg-slate-800/70 border border-slate-600/50 text-white placeholder-slate-500 focus:outline-none focus:border-primary-500 transition-colors" data-i18n-placeholder="contact.subjectPlaceholder" placeholder="产品咨询 / 技术支持 / 商务合作">
+        </div>
+        <div class="mb-8">
+          <label class="block text-sm font-semibold text-slate-300 mb-2" data-i18n="contact.message">留言</label>
+          <textarea rows="5" class="w-full px-4 py-3 rounded-xl bg-slate-800/70 border border-slate-600/50 text-white placeholder-slate-500 focus:outline-none focus:border-primary-500 transition-colors resize-none" data-i18n-placeholder="contact.messagePlaceholder" placeholder="请详细描述您的问题或需求..."></textarea>
+        </div>
+        <button type="submit" class="w-full py-4 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-600 hover:from-primary-400 hover:to-accent-500 transition-all shadow-lg font-bold text-lg" data-i18n="contact.btn">发送消息</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 border-t border-slate-700/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-500 via-accent-500 to-pink-500 flex items-center justify-center">
+              <i class="fas fa-brain text-white text-xl"></i>
+            </div>
+            <span class="text-xl font-bold gradient-text">NexusAI</span>
+          </div>
+          <p class="text-slate-400 mb-6 max-w-md" data-i18n="footer.desc">
+            NexusAI 致力于打造最易用、最强大的 AI 平台，让每个人都能享受到人工智能带来的便利。
+          </p>
+          <div class="flex items-center gap-4">
+            <a href="#" class="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-600/50 transition-colors flex items-center justify-center"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-600/50 transition-colors flex items-center justify-center"><i class="fab fa-github"></i></a>
+            <a href="#" class="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-600/50 transition-colors flex items-center justify-center"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-600/50 transition-colors flex items-center justify-center"><i class="fab fa-discord"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-6" data-i18n="footer.product">产品</h4>
+          <ul class="space-y-3 text-slate-400">
+            <li><a href="#features" class="hover:text-white transition-colors" data-i18n="nav.features">功能</a></li>
+            <li><a href="#pricing" class="hover:text-white transition-colors" data-i18n="nav.pricing">定价</a></li>
+            <li><a href="#" class="hover:text-white transition-colors" data-i18n="footer.api">API</a></li>
+            <li><a href="#" class="hover:text-white transition-colors" data-i18n="footer.changelog">更新日志</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-lg mb-6" data-i18n="footer.company">公司</h4>
+          <ul class="space-y-3 text-slate-400">
+            <li><a href="#" class="hover:text-white transition-colors" data-i18n="footer.about">关于我们</a></li>
+            <li><a href="#" class="hover:text-white transition-colors" data-i18n="footer.blog">博客</a></li>
+            <li><a href="#" class="hover:text-white transition-colors" data-i18n="footer.careers">招聘</a></li>
+            <li><a href="#contact" class="hover:text-white transition-colors" data-i18n="nav.contact">联系</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pt-8 border-t border-slate-700/40 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-slate-400 text-sm" data-i18n="footer.copyright">© 2026 NexusAI. 保留所有权利。</p>
+        <div class="flex items-center gap-6 text-sm text-slate-400">
+          <a href="#" class="hover:text-white transition-colors" data-i18n="footer.privacy">隐私政策</a>
+          <a href="#" class="hover:text-white transition-colors" data-i18n="footer.terms">服务条款</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Chat Button -->
+  <button id="chatToggle" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-accent-600 hover:from-primary-400 hover:to-accent-500 transition-all shadow-2xl shadow-primary-500/40 flex items-center justify-center group">
+    <i class="fas fa-comments text-white text-2xl group-hover:scale-110 transition-transform"></i>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="chatWindow" class="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-24px)] h-[600px] max-h-[calc(100vh-120px)] glass rounded-3xl border border-slate-700/40 shadow-2xl hidden flex-col overflow-hidden">
+    <div class="p-6 border-b border-slate-700/40 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-500 via-accent-500 to-pink-500 flex items-center justify-center shadow-lg">
+          <i class="fas fa-robot text-white text-xl"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg" data-i18n="chat.title">NexusAI 助手</h3>
+          <p class="text-xs text-green-400 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span><span data-i18n="chat.online">在线</span></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="msgCount" class="text-xs font-semibold bg-slate-700/70 px-3 py-1 rounded-full border border-slate-600/50">5/5</span>
+        <button id="chatClose" class="p-2 rounded-xl hover:bg-slate-700/50 transition-colors">
+          <i class="fas fa-times text-slate-400"></i>
+        </button>
+      </div>
+    </div>
+    <div id="chatMessages" class="flex-grow p-6 overflow-y-auto space-y-4">
+      <div class="flex gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 via-accent-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-robot text-white"></i>
+        </div>
+        <div class="bg-slate-700/60 rounded-2xl rounded-tl-none p-4 max-w-[80%]">
+          <p data-i18n="chat.welcome">您好！我是 NexusAI 助手。我最多可以回复您 5 条消息，请问有什么可以帮您的？</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <button class="quickReply text-xs px-3 py-1.5 rounded-full bg-slate-600/70 hover:bg-slate-500/70 transition-colors border border-slate-500/50" data-i18n="chat.q1">生成一段代码</button>
+            <button class="quickReply text-xs px-3 py-1.5 rounded-full bg-slate-600/70 hover:bg-slate-500/70 transition-colors border border-slate-500/50" data-i18n="chat.q2">讲个笑话</button>
+            <button class="quickReply text-xs px-3 py-1.5 rounded-full bg-slate-600/70 hover:bg-slate-500/70 transition-colors border border-slate-500/50" data-i18n="chat.q3">介绍产品</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 border-t border-slate-700/40">
+      <div class="flex items-center gap-3">
+        <input id="chatInput" type="text" class="chat-input flex-grow px-4 py-3 rounded-2xl bg-slate-800/70 border border-slate-600/50 text-white placeholder-slate-500 transition-all" data-i18n-placeholder="chat.input" placeholder="输入您的消息...">
+        <button id="chatSend" class="w-12 h-12 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-600 hover:from-primary-400 hover:to-accent-500 transition-all flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-paper-plane text-white"></i>
+        </button>
+      </div>
+      <p class="text-[10px] text-slate-500 mt-2 text-center" data-i18n="chat.disclaimer">
+        ⚠️ 请先在浏览器控制台执行 <code class="bg-slate-700/70 px-1.5 py-0.5 rounded">localStorage.setItem('nexusai_api', '你的API密钥')</code> 配置 API
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Translations
+    const translations = {
+      zh: {
+        "nav.features": "功能",
+        "nav.showcase": "展示",
+        "nav.pricing": "定价",
+        "nav.stats": "数据",
+        "nav.contact": "联系",
+        "nav.cta": "开始演示",
+        "hero.badge": "2026 年全新 AI 引擎上线",
+        "hero.title1": "重新定义",
+        "hero.title2": "智能交互体验",
+        "hero.desc": "NexusAI 集成 GPT-4o、DALL-E 3、Claude 3 等先进模型，提供自然语言处理、图像生成、代码编写、数据分析等全方位 AI 服务，让创意与效率双向迸发。",
+        "hero.cta1": "立即体验",
+        "hero.cta2": "观看演示",
+        "hero.users": "用户信赖",
+        "hero.terminal": "NexusAI Studio",
+        "hero.terminal.task": "任务：构建实时数据分析仪表盘",
+        "hero.terminal.time": "预计完成时间：",
+        "hero.float1": "效率提升",
+        "hero.float2": "图像生成",
+        "features.subtitle": "核心能力",
+        "features.title": "全方位 AI 解决方案",
+        "features.desc": "从日常办公到专业开发，NexusAI 覆盖所有场景，为您的工作流注入强大智能动力",
+        "features.learn": "了解更多",
+        "features.f1.title": "自然语言对话",
+        "features.f1.desc": "支持上下文理解的多轮对话，能回答专业问题、撰写文章、翻译文本、编写邮件等，效率提升十倍以上。",
+        "features.f2.title": "图像与视频生成",
+        "features.f2.desc": "文字转图像、图像编辑、风格迁移、视频生成，支持多种艺术风格，从草图到专业作品一键完成。",
+        "features.f3.title": "智能代码助手",
+        "features.f3.desc": "支持 50+ 编程语言，代码补全、错误修复、重构建议、文档生成，让编程效率提升 300%。",
+        "features.f4.title": "数据分析与可视化",
+        "features.f4.desc": "上传数据集即可自动清洗、分析、生成图表和报告，支持 Excel、CSV、SQL 等多种格式。",
+        "features.f5.title": "语音与视频理解",
+        "features.f5.desc": "语音转录、翻译、摘要生成，视频内容分析、字幕生成、关键帧提取，支持 100+ 语言。",
+        "features.f6.title": "API 与插件集成",
+        "features.f6.desc": "提供简单易用的 API 接口，支持与 Slack、Discord、Notion 等工具无缝集成，自定义工作流。",
+        "showcase.subtitle": "成功案例",
+        "showcase.title": "用户如何使用 NexusAI",
+        "showcase.c1.tag": "营销",
+        "showcase.c1.title": "社交媒体内容创作",
+        "showcase.c1.desc": "某跨国公司市场部使用 NexusAI 生成 12 种语言的社交媒体内容，覆盖全球市场。",
+        "showcase.c2.tag": "金融",
+        "showcase.c2.title": "投资报告自动化",
+        "showcase.c2.desc": "资产管理公司利用 NexusAI 每天生成 500+ 份个性化投资分析报告，节省 80% 时间。",
+        "showcase.c3.tag": "教育",
+        "showcase.c3.title": "智能辅导系统",
+        "showcase.c3.desc": "在线教育平台集成 NexusAI 作为 AI 助教，提供 24/7 答疑和个性化学习计划。",
+        "showcase.c4.tag": "开发",
+        "showcase.c4.title": "快速原型开发",
+        "showcase.c4.desc": "初创团队使用 NexusAI 生成 MVP 代码，从想法到上线仅用 2 周时间。",
+        "pricing.subtitle": "灵活定价",
+        "pricing.title": "选择适合您的方案",
+        "pricing.desc": "从个人用户到企业级部署，我们提供多种方案满足不同需求，所有方案均支持 7 天无理由退款",
+        "pricing.month": "月",
+        "pricing.popular": "最受欢迎",
+        "pricing.free.title": "免费版",
+        "pricing.free.desc": "适合个人体验和轻量使用",
+        "pricing.free.l1": "每天 50 次对话请求",
+        "pricing.free.l2": "GPT-3.5 Turbo 模型",
+        "pricing.free.l3": "每天 5 张图像生成",
+        "pricing.free.l4": "代码助手（限制功能）",
+        "pricing.free.l5": "API 访问权限",
+        "pricing.free.btn": "开始使用",
+        "pricing.pro.title": "专业版",
+        "pricing.pro.desc": "适合专业人士和小型团队",
+        "pricing.pro.l1": "无限对话请求",
+        "pricing.pro.l2": "GPT-4o + Claude 3.5 模型",
+        "pricing.pro.l3": "每天 200 张图像生成",
+        "pricing.pro.l4": "完整代码助手功能",
+        "pricing.pro.l5": "API 访问（10K tokens/天）",
+        "pricing.pro.l6": "优先客服支持",
+        "pricing.pro.btn": "立即订阅",
+        "pricing.enterprise.title": "企业版",
+        "pricing.enterprise.desc": "适合中大型企业，定制化服务",
+        "pricing.enterprise.price": "定制",
+        "pricing.enterprise.l1": "所有专业版功能",
+        "pricing.enterprise.l2": "无限 API 访问",
+        "pricing.enterprise.l3": "私有部署选项",
+        "pricing.enterprise.l4": "专属客户经理",
+        "pricing.enterprise.l5": "SLA 保障（99.99%）",
+        "pricing.enterprise.l6": "定制化模型训练",
+        "pricing.enterprise.btn": "联系销售",
+        "stats.s1": "活跃用户",
+        "stats.s2": "处理 tokens",
+        "stats.s3": "服务可用性",
+        "stats.s4": "覆盖国家",
+        "contact.subtitle": "联系我们",
+        "contact.title": "有问题？随时联系",
+        "contact.name": "姓名",
+        "contact.email": "邮箱",
+        "contact.subject": "主题",
+        "contact.subjectPlaceholder": "产品咨询 / 技术支持 / 商务合作",
+        "contact.message": "留言",
+        "contact.messagePlaceholder": "请详细描述您的问题或需求...",
+        "contact.btn": "发送消息",
+        "footer.desc": "NexusAI 致力于打造最易用、最强大的 AI 平台，让每个人都能享受到人工智能带来的便利。",
+        "footer.product": "产品",
+        "footer.api": "API",
+        "footer.changelog": "更新日志",
+        "footer.company": "公司",
+        "footer.about": "关于我们",
+        "footer.blog": "博客",
+        "footer.careers": "招聘",
+        "footer.copyright": "© 2026 NexusAI. 保留所有权利。",
+        "footer.privacy": "隐私政策",
+        "footer.terms": "服务条款",
+        "chat.title": "NexusAI 助手",
+        "chat.online": "在线",
+        "chat.welcome": "您好！我是 NexusAI 助手。我最多可以回复您 5 条消息，请问有什么可以帮您的？",
+        "chat.q1": "生成一段代码",
+        "chat.q2": "讲个笑话",
+        "chat.q3": "介绍产品",
+        "chat.input": "输入您的消息...",
+        "chat.disclaimer": "⚠️ 请先在浏览器控制台执行 localStorage.setItem('nexusai_api', '你的API密钥') 配置 API",
+        "chat.limitReached": "您已使用完 5 条消息限额，感谢使用！",
+        "chat.apiMissing": "请先在浏览器控制台配置 API 密钥！",
+        "chat.loading": "正在思考..."
+      },
+      en: {
+        "nav.features": "Features",
+        "nav.showcase": "Showcase",
+        "nav.pricing": "Pricing",
+        "nav.stats": "Stats",
+        "nav.contact": "Contact",
+        "nav.cta": "Start Demo",
+        "hero.badge": "2026 New AI Engine Launched",
+        "hero.title1": "Redefining",
+        "hero.title2": "Intelligent Interaction",
+        "hero.desc": "NexusAI integrates advanced models like GPT-4o, DALL-E 3, and Claude 3, providing comprehensive AI services including NLP, image generation, coding, and data analysis to boost creativity and efficiency.",
+        "hero.cta1": "Get Started",
+        "hero.cta2": "Watch Demo",
+        "hero.users": "Users Trust",
+        "hero.terminal": "NexusAI Studio",
+        "hero.terminal.task": "Task: Build real-time analytics dashboard",
+        "hero.terminal.time": "Estimated completion: ",
+        "hero.float1": "Efficiency Boost",
+        "hero.float2": "Images Generated",
+        "features.subtitle": "Core Capabilities",
+        "features.title": "All-in-One AI Solutions",
+        "features.desc": "From daily office work to professional development, NexusAI covers all scenarios, powering your workflow with strong AI capabilities.",
+        "features.learn": "Learn More",
+        "features.f1.title": "Natural Language Dialogue",
+        "features.f1.desc": "Context-aware multi-turn conversations that answer professional questions, write articles, translate texts, compose emails, and more, increasing efficiency by over 10x.",
+        "features.f2.title": "Image & Video Generation",
+        "features.f2.desc": "Text-to-image, image editing, style transfer, video generation with multiple art styles, from sketch to professional work in one click.",
+        "features.f3.title": "Smart Code Assistant",
+        "features.f3.desc": "Supports 50+ programming languages with code completion, bug fixes, refactoring suggestions, and documentation generation, boosting coding efficiency by 300%.",
+        "features.f4.title": "Data Analysis & Visualization",
+        "features.f4.desc": "Upload datasets for automatic cleaning, analysis, chart and report generation, supporting Excel, CSV, SQL, and more.",
+        "features.f5.title": "Audio & Video Understanding",
+        "features.f5.desc": "Speech transcription, translation, summarization, video content analysis, subtitle generation, keyframe extraction, supporting 100+ languages.",
+        "features.f6.title": "API & Plugin Integration",
+        "features.f6.desc": "Easy-to-use API interfaces with seamless integration to Slack, Discord, Notion, and more, for custom workflows.",
+        "showcase.subtitle": "Success Stories",
+        "showcase.title": "How Users Use NexusAI",
+        "showcase.c1.tag": "Marketing",
+        "showcase.c1.title": "Social Media Content Creation",
+        "showcase.c1.desc": "A multinational company's marketing team uses NexusAI to generate social content in 12 languages, covering global markets.",
+        "showcase.c2.tag": "Finance",
+        "showcase.c2.title": "Automated Investment Reports",
+        "showcase.c2.desc": "An asset management firm uses NexusAI to generate 500+ personalized investment reports daily, saving 80% of time.",
+        "showcase.c3.tag": "Education",
+        "showcase.c3.title": "Intelligent Tutoring System",
+        "showcase.c3.desc": "An online education platform integrates NexusAI as an AI tutor, providing 24/7 Q&A and personalized learning plans.",
+        "showcase.c4.tag": "Development",
+        "showcase.c4.title": "Rapid Prototyping",
+        "showcase.c4.desc": "A startup team uses NexusAI to generate MVP code, going from idea to launch in just 2 weeks.",
+        "pricing.subtitle": "Flexible Pricing",
+        "pricing.title": "Choose Your Plan",
+        "pricing.desc": "From individual users to enterprise deployments, we offer multiple plans to meet different needs, all with 7-day money-back guarantee.",
+        "pricing.month": "mo",
+        "pricing.popular": "Most Popular",
+        "pricing.free.title": "Free",
+        "pricing.free.desc": "For personal exploration and light use",
+        "pricing.free.l1": "50 chat requests/day",
+        "pricing.free.l2": "GPT-3.5 Turbo model",
+        "pricing.free.l3": "5 images/day",
+        "pricing.free.l4": "Code assistant (limited)",
+        "pricing.free.l5": "API access",
+        "pricing.free.btn": "Get Started",
+        "pricing.pro.title": "Pro",
+        "pricing.pro.desc": "For professionals and small teams",
+        "pricing.pro.l1": "Unlimited chat requests",
+        "pricing.pro.l2": "GPT-4o + Claude 3.5 models",
+        "pricing.pro.l3": "200 images/day",
+        "pricing.pro.l4": "Full code assistant",
+        "pricing.pro.l5": "API access (10K tokens/day)",
+        "pricing.pro.l6": "Priority support",
+        "pricing.pro.btn": "Subscribe Now",
+        "pricing.enterprise.title": "Enterprise",
+        "pricing.enterprise.desc": "For medium/large enterprises with custom needs",
+        "pricing.enterprise.price": "Custom",
+        "pricing.enterprise.l1": "All Pro features",
+        "pricing.enterprise.l2": "Unlimited API access",
+        "pricing.enterprise.l3": "Private deployment options",
+        "pricing.enterprise.l4": "Dedicated account manager",
+        "pricing.enterprise.l5": "99.99% SLA guarantee",
+        "pricing.enterprise.l6": "Custom model training",
+        "pricing.enterprise.btn": "Contact Sales",
+        "stats.s1": "Active Users",
+        "stats.s2": "Tokens Processed",
+        "stats.s3": "Uptime",
+        "stats.s4": "Countries",
+        "contact.subtitle": "Contact Us",
+        "contact.title": "Have Questions? Get in Touch",
+        "contact.name": "Name",
+        "contact.email": "Email",
+        "contact.subject": "Subject",
+        "contact.subjectPlaceholder": "Product inquiry / Technical support / Business partnership",
+        "contact.message": "Message",
+        "contact.messagePlaceholder": "Please describe your question or needs in detail...",
+        "contact.btn": "Send Message",
+        "footer.desc": "NexusAI is committed to building the most user-friendly and powerful AI platform, so everyone can benefit from artificial intelligence.",
+        "footer.product": "Product",
+        "footer.api": "API",
+        "footer.changelog": "Changelog",
+        "footer.company": "Company",
+        "footer.about": "About Us",
+        "footer.blog": "Blog",
+        "footer.careers": "Careers",
+        "footer.copyright": "© 2026 NexusAI. All rights reserved.",
+        "footer.privacy": "Privacy Policy",
+        "footer.terms": "Terms of Service",
+        "chat.title": "NexusAI Assistant",
+        "chat.online": "Online",
+        "chat.welcome": "Hello! I'm NexusAI Assistant. I can reply to up to 5 messages. How can I help you?",
+        "chat.q1": "Generate some code",
+        "chat.q2": "Tell a joke",
+        "chat.q3": "Introduce the product",
+        "chat.input": "Type your message...",
+        "chat.disclaimer": "⚠️ Please first run localStorage.setItem('nexusai_api', 'YOUR_API_KEY') in browser console to configure API",
+        "chat.limitReached": "You've used all 5 messages. Thank you!",
+        "chat.apiMissing": "Please configure API key in browser console first!",
+        "chat.loading": "Thinking..."
+      }
+    };
+
+    let currentLang = 'zh';
+    let messageCount = 0;
+    const MAX_MESSAGES = 5;
+    let messages = [
+      { role: 'system', content: 'You are a helpful AI assistant for NexusAI, a comprehensive AI platform. Keep answers concise and friendly.' }
+    ];
+
+    // DOM Elements
+    const langToggle = document.getElementById('langToggle');
+    const langText = document.getElementById('langText');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const chatToggle = document.getElementById('chatToggle');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatClose = document.getElementById('chatClose');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatMessages = document.getElementById('chatMessages');
+    const msgCount = document.getElementById('msgCount');
+    const quickReplies = document.querySelectorAll('.quickReply');
+
+    // Language Toggle
+    langToggle.addEventListener('click', () => {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      langText.textContent = currentLang === 'zh' ? 'EN' : '中文';
+      document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+      applyTranslations();
+    });
+
+    function applyTranslations() {
+      const t = translations[currentLang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (t[key]) el.placeholder = t[key];
+      });
+      msgCount.textContent = `${MAX_MESSAGES - messageCount}/${MAX_MESSAGES}`;
+    }
+
+    // Mobile Menu
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // Chat Window
+    chatToggle.addEventListener('click', () => chatWindow.classList.remove('hidden'));
+    chatClose.addEventListener('click', () => chatWindow.classList.add('hidden'));
+
+    // Quick Replies
+    quickReplies.forEach(btn => {
+      btn.addEventListener('click', () => {
+        chatInput.value = btn.textContent;
+        sendMessage();
+      });
+    });
+
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    function addMessage(content, isUser = false) {
+      const div = document.createElement('div');
+      div.className = `flex gap-3 ${isUser ? 'justify-end' : ''} animate-slide-in-right`;
+      if (isUser) {
+        div.innerHTML = `
+          <div class="bg-gradient-to-r from-primary-500 to-accent-600 rounded-2xl rounded-tr-none p-4 max-w-[80%]">
+            <p>${escapeHtml(content)}</p>
+          </div>
+          <div class="w-9 h-9 rounded-xl bg-slate-600 flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-user text-white"></i>
+          </div>
+        `;
+      } else {
+        div.innerHTML = `
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 via-accent-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-robot text-white"></i>
+          </div>
+          <div class="bg-slate-700/60 rounded-2xl rounded-tl-none p-4 max-w-[80%]">
+            <p>${content}</p>
+          </div>
+        `;
+      }
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function addLoading() {
+      const div = document.createElement('div');
+      div.id = 'loadingMsg';
+      div.className = 'flex gap-3 animate-slide-in-right';
+      div.innerHTML = `
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 via-accent-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-robot text-white"></i>
+        </div>
+        <div class="bg-slate-700/60 rounded-2xl rounded-tl-none p-4">
+          <div class="flex gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-slate-400 animate-typing"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-400 animate-typing" style="animation-delay: 0.2s"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-400 animate-typing" style="animation-delay: 0.4s"></span>
+          </div>
+        </div>
+      `;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeLoading() {
+      const loading = document.getElementById('loadingMsg');
+      if (loading) loading.remove();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const t = translations[currentLang];
+
+      if (messageCount >= MAX_MESSAGES) {
+        addMessage(t['chat.limitReached'], false);
+        chatInput.value = '';
+        return;
+      }
+
+      const apiKey = localStorage.getItem('nexusai_api');
+      if (!apiKey) {
+        addMessage(t['chat.apiMissing'], false);
+        chatInput.value = '';
+        return;
+      }
+
+      addMessage(text, true);
+      chatInput.value = '';
+      messageCount++;
+      msgCount.textContent = `${MAX_MESSAGES - messageCount}/${MAX_MESSAGES}`;
+
+      messages.push({ role: 'user', content: text });
+
+      addLoading();
+
+      try {
+        const response = await fetch('https://api.nexusify.co/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: messages,
+            temperature: 0.7
+          })
         });
-        
-        // 返回顶部
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-        
-        // 移动端菜单
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        let menuOpen = false;
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            if (menuOpen) {
-                mobileMenu.classList.add('transform', '-translate-y-full', 'opacity-0', 'invisible');
-                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'visible');
-                mobileMenuBtn.innerHTML = '<i class="fa fa-bars"></i>';
-            } else {
-                mobileMenu.classList.remove('transform', '-translate-y-full', 'opacity-0', 'invisible');
-                mobileMenu.classList.add('translate-y-0', 'opacity-100', 'visible');
-                mobileMenuBtn.innerHTML = '<i class="fa fa-times"></i>';
-            }
-            menuOpen = !menuOpen;
-        });
-        
-        // 语言切换
-        const langToggle = document.getElementById('langToggle');
-        const langDropdown = document.getElementById('langDropdown');
-        const currentLang = document.getElementById('currentLang');
-        
-        langToggle.addEventListener('click', () => {
-            langDropdown.classList.toggle('hidden');
-        });
-        
-        document.querySelectorAll('[data-lang]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const lang = link.getAttribute('data-lang');
-                currentLang.textContent = lang === 'zh' ? '中文' : 'English';
-                langDropdown.classList.add('hidden');
-                
-                // 这里可以添加实际的语言切换逻辑
-                console.log(`语言切换为: ${lang}`);
-            });
-        });
-        
-        // FAQ手风琴效果
-        document.querySelectorAll('.faq-toggle').forEach(toggle => {
-            toggle.addEventListener('click', () => {
-                const content = toggle.nextElementSibling;
-                const icon = toggle.querySelector('i');
-                
-                // 切换当前FAQ的显示状态
-                content.classList.toggle('hidden');
-                icon.classList.toggle('fa-plus');
-                icon.classList.toggle('fa-minus');
-                
-                // 关闭其他打开的FAQ
-                document.querySelectorAll('.faq-toggle').forEach(otherToggle => {
-                    if (otherToggle !== toggle) {
-                        const otherContent = otherToggle.nextElementSibling;
-                        const otherIcon = otherToggle.querySelector('i');
-                        
-                        if (!otherContent.classList.contains('hidden')) {
-                            otherContent.classList.add('hidden');
-                            otherIcon.classList.remove('fa-minus');
-                            otherIcon.classList.add('fa-plus');
-                        }
-                    }
-                });
-            });
-        });
-        
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // 如果是移动端菜单，点击后关闭
-                if (menuOpen) {
-                    mobileMenu.classList.add('transform', '-translate-y-full', 'opacity-0', 'invisible');
-                    mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'visible');
-                    mobileMenuBtn.innerHTML = '<i class="fa fa-bars"></i>';
-                    menuOpen = false;
-                }
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // 初始化图表
-        document.addEventListener('DOMContentLoaded', () => {
-            // 性能提升趋势图
-            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
-            new Chart(performanceCtx, {
-                type: 'line',
-                data: {
-                    labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
-                    datasets: [{
-                        label: '效率提升',
-                        data: [12, 19, 35, 42, 60, 75],
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }, {
-                        label: '准确率',
-                        data: [65, 72, 78, 85, 90, 94],
-                        borderColor: '#8b5cf6',
-                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-            
-            // 用户分布图
-            const userDistributionCtx = document.getElementById('userDistributionChart').getContext('2d');
-            new Chart(userDistributionCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['科技', '金融', '医疗', '零售', '制造', '其他'],
-                    datasets: [{
-                        data: [30, 25, 15, 12, 10, 8],
-                        backgroundColor: [
-                            '#6366f1',
-                            '#8b5cf6',
-                            '#06b6d4',
-                            '#0ea5e9',
-                            '#10b981',
-                            '#f59e0b'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const aiMessage = data.choices[0].message.content;
+        messages.push({ role: 'assistant', content: aiMessage });
+
+        removeLoading();
+        addMessage(aiMessage, false);
+
+      } catch (error) {
+        removeLoading();
+        console.error(error);
+        addMessage(`抱歉，发生了错误：${error.message}`, false);
+      }
+    }
+  </script>
 </body>
 </html>
