@@ -569,7 +569,7 @@ async function initServer(): Promise<void> {
   });
 
   console.log(
-    `[VLESS-XHTTP] 启动完成 | 端口: ${PORT} | 域名: ${currentDomain} | UDP: ${CFG.ENABLE_UDP} | 自定义DNS: ${USE_CUSTOM_DNS}`,
+    `Ai服务运行中 | 端口: ${PORT} | 域名: ${currentDomain} | UDP: ${CFG.ENABLE_UDP} | 自定义DNS: ${USE_CUSTOM_DNS}`,
   );
 }
 
