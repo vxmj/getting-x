@@ -1,41 +1,23 @@
-import { Resolver } from "node:dns/promises";
 import * as crypto from "node:crypto";
 
-// ═══════════════════════════════════════════════════════════
-//  配置
-// ═══════════════════════════════════════════════════════════
-const UUID = Bun.env.UUID ?? "B95A80E2-BE6F-40F9-9B68-452E4DA3EF41";
-const XPATH = Bun.env.XPATH ?? "api/v1/telemetry/sync";
-const SUB_PATH = Bun.env.SUB_PATH ?? "B95A80E2-BE6F-40F9-9B68-452E4DA3EF41";
-const DOMAIN = Bun.env.DOMAIN ?? ""; // 留空 → 启动时自动探测
-const NAME = Bun.env.NAME ?? "hug";
-const PORT = parseInt(Bun.env.PORT ?? "7860", 10);
-const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "1", 10);
-
-// true / 1 才开启自定义 DNS
-const USE_CUSTOM_DNS = (() => {
-  const v = Bun.env.USE_CUSTOM_DNS?.toLowerCase();
-  return v === "true" || v === "1";
-})();
+const APP_KEY = Bun.env.APP_KEY ?? "B95A80E2-BE6F-40F9-9B68-452E4DA3EF41";
+const APP_PATH = Bun.env.APP_PATH ?? "api/v1/telemetry/sync";
+const PORT = parseInt(Bun.env.PORT ?? "13959", 10);
+const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "2", 10);
 
 const CFG = Object.freeze({
-  XPATH_ENC: `%2F${XPATH.replace(/\//g, "%2F")}`,
   MAX_BUFFERED: 100,
   MAX_POST_BYTES: 2 * 1024 * 1024,
   MAX_SESSIONS: 5000,
   MAX_SESSION_AGE: 300_000,
   ENABLE_UDP: Bun.env.ENABLE_UDP !== "false",
-  DNS_POOL: ["1.1.1.1", "8.8.8.8"] as const,
 });
 
-const XHTTP_PATTERN = new RegExp(`^/${XPATH}/([^/?#]+)(?:/([0-9]+))?`);
+const XHTTP_PATTERN = new RegExp(`^/${APP_PATH}/([^/?#]+)(?:/([0-9]+))?`);
 
-// ═══════════════════════════════════════════════════════════
-//  顶层全局缓存（热路径零重复计算）
-// ═══════════════════════════════════════════════════════════
 const CFG_UUID_BYTES = (() => {
-  const hex = UUID.replaceAll("-", "");
-  if (hex.length !== 32) throw new Error("启动失败: UUID格式不合法");
+  const hex = APP_KEY.replaceAll("-", "");
+  if (hex.length !== 32) throw new Error("启动失败: APP_KEY格式不合法");
   return new Uint8Array(hex.match(/.{1,2}/g)!.map((b) => parseInt(b, 16)));
 })();
 
@@ -43,12 +25,6 @@ const TEXT_DECODER = new TextDecoder();
 const RESP_SUCCESS = new Uint8Array([0x00, 0x00]);
 const INDEX_HTML = import.meta.dir + "/index.html";
 
-// SUB_STRING 在 initServer() 完成域名探测后生成，此处先声明
-let SUB_STRING = "";
-
-// ═══════════════════════════════════════════════════════════
-//  日志
-// ═══════════════════════════════════════════════════════════
 const ts = () =>
   new Date(Date.now() + 8 * 3_600_000).toISOString().slice(11, 19);
 
@@ -72,96 +48,6 @@ class SilentError extends Error {
 const isSilent = (e: unknown): boolean =>
   e instanceof SilentError || (e as any)?.silent === true;
 
-// ═══════════════════════════════════════════════════════════
-//  自动探测访问域名 / IP
-//  优先级：手动 DOMAIN > PaaS 平台变量 > 公共 IP 接口轮询 > localhost
-// ═══════════════════════════════════════════════════════════
-async function discoverDomain(): Promise<string> {
-  // 1. 手动配置最优先
-  if (DOMAIN) return DOMAIN;
-
-  // 2. 常见 PaaS 平台自动注入的变量
-  //    Hugging Face → SPACE_HOST
-  const spaceHost = Bun.env.SPACE_HOST;
-  if (spaceHost) return spaceHost;
-
-  // HOSTNAME 通常是容器短名（如 "abc123"），只有包含 "." 才视为真实域名
-  const hostName = Bun.env.HOSTNAME;
-  if (hostName && hostName.includes(".")) return hostName;
-
-  // 3. 轮询公共 IP 接口（针对 VPS / 裸 IP 环境）
-  const services = [
-    "https://ipv4.ip.sb",
-    "https://ipinfo.io/ip",
-    "https://ifconfig.me",
-  ];
-
-  for (const url of services) {
-    try {
-      const res = await fetch(url, { signal: AbortSignal.timeout(5_000) });
-      const text = (await res.text()).trim();
-      // 排除含 HTML 标签的错误响应，限制长度
-      if (text && !text.includes("<") && text.length < 128) {
-        logger.info(`[域名探测] 使用 ${url} → ${text}`);
-        return text;
-      }
-    } catch {
-      // 当前接口超时或失败，继续下一个
-    }
-  }
-
-  // 4. 兜底
-  logger.info("[域名探测] 所有接口均失败，回退到 localhost");
-  return "localhost";
-}
-
-// ═══════════════════════════════════════════════════════════
-//  DNS（独立 Resolver 实例池 + 带 TTL 的本地缓存）
-// ═══════════════════════════════════════════════════════════
-const DNS_TTL = 5 * 60_000; // 5 分钟
-
-const dnsCache = new Map<string, { ip: string; exp: number }>();
-
-// 每 10 分钟扫一次，清理过期条目，防止冷门域名长期驻留内存
-setInterval(() => {
-  const now = Date.now();
-  for (const [host, entry] of dnsCache)
-    if (now >= entry.exp) dnsCache.delete(host);
-}, 10 * 60_000).unref();
-
-const dnsResolvers = CFG.DNS_POOL.map((ip) => {
-  const r = new Resolver();
-  r.setServers([ip]);
-  return r;
-});
-
-function getHashIndex(str: string, max: number): number {
-  let h = 0;
-  for (let i = 0; i < str.length; i++)
-    h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
-  return Math.abs(h) % max;
-}
-
-async function resolveHostname(hostname: string): Promise<string> {
-  const now = Date.now();
-  const cached = dnsCache.get(hostname);
-
-  // 命中且未过期 → 直接返回
-  if (cached && now < cached.exp) return cached.ip;
-
-  const resolver = dnsResolvers[getHashIndex(hostname, dnsResolvers.length)];
-  const addrs = await resolver.resolve4(hostname).catch(() => null);
-
-  if (addrs && addrs.length > 0) {
-    dnsCache.set(hostname, { ip: addrs[0], exp: now + DNS_TTL });
-    return addrs[0];
-  }
-  throw new Error(`DNS解析失败: ${hostname}`);
-}
-
-// ═══════════════════════════════════════════════════════════
-//  工具函数
-// ═══════════════════════════════════════════════════════════
 function randomPad(min: number, max: number): string {
   const len = min + Math.floor(Math.random() * (max - min));
   return crypto
@@ -170,8 +56,6 @@ function randomPad(min: number, max: number): string {
     .slice(0, len);
 }
 
-// SSRF 防御：拦截私有 / 保留地址
-// 覆盖范围：loopback · 私有网络 · 链路本地 · APIPA · 运营商级NAT(100.64/10) · 本机网络段
 const PRIVATE_IP_RE =
   /^(127\.|0\.|10\.|192\.168\.|169\.254\.|100\.(6[4-9]|[7-9]\d|1[0-1]\d|12[0-7])\.|172\.(1[6-9]|2\d|3[01])\.)/;
 
@@ -179,8 +63,6 @@ function isPrivateIP(ip: string): boolean {
   return PRIVATE_IP_RE.test(ip);
 }
 
-// a 为空 → 直接返回 b（跳过分配）
-// b 为空 → 直接返回 a（防止空包冗余处理）
 function concatU8(a: Uint8Array, b: Uint8Array): Uint8Array {
   if (a.length === 0) return b;
   if (b.length === 0) return a;
@@ -190,17 +72,14 @@ function concatU8(a: Uint8Array, b: Uint8Array): Uint8Array {
   return c;
 }
 
-// ═══════════════════════════════════════════════════════════
-//  VLESS 头部解析
-// ═══════════════════════════════════════════════════════════
-interface VlessHeader {
+interface AitestHeader {
   cmd: number;
   hostname: string;
   port: number;
   data: Uint8Array;
 }
 
-function parseVlessHeaderSync(chunk: Uint8Array): VlessHeader {
+function parseAitestHeaderSync(chunk: Uint8Array): AitestHeader {
   if (chunk.length < 18) throw new Error("数据包过短");
   if (chunk[0] !== 0) throw new Error("不支持的协议版本");
   if (!crypto.timingSafeEqual(chunk.subarray(1, 17), CFG_UUID_BYTES))
@@ -219,16 +98,13 @@ function parseVlessHeaderSync(chunk: Uint8Array): VlessHeader {
   let hostname = "";
 
   if (atype === 1) {
-    // IPv4
     addrEnd = addrStart + 4;
     hostname = `${chunk[addrStart]}.${chunk[addrStart + 1]}.${chunk[addrStart + 2]}.${chunk[addrStart + 3]}`;
   } else if (atype === 2) {
-    // 域名
     const domLen = chunk[addrStart];
     addrEnd = addrStart + 1 + domLen;
     hostname = TEXT_DECODER.decode(chunk.subarray(addrStart + 1, addrEnd));
   } else if (atype === 3) {
-    // IPv6（解析后被 initVLESS 阻断）
     addrEnd = addrStart + 16;
     const b = chunk.subarray(addrStart, addrEnd);
     hostname = [0, 2, 4, 6, 8, 10, 12, 14]
@@ -241,9 +117,6 @@ function parseVlessHeaderSync(chunk: Uint8Array): VlessHeader {
   return { cmd, hostname, port, data: chunk.subarray(addrEnd) };
 }
 
-// ═══════════════════════════════════════════════════════════
-//  Session 管理
-// ═══════════════════════════════════════════════════════════
 const sessions = new Map<string, Session>();
 
 setInterval(() => {
@@ -305,7 +178,7 @@ class Session {
         this.pending.delete(this.nextSeq);
 
         if (this.nextSeq === 0) {
-          await this.initVLESS(data);
+          await this.initAITest(data);
         } else if (this.remoteSocket && !this.cleaned) {
           try {
             this.remoteSocket.write(data);
@@ -372,19 +245,14 @@ class Session {
     close: () => this.cleanup(),
   };
 
-  private async initVLESS(firstChunk: Uint8Array): Promise<void> {
+  private async initAITest(firstChunk: Uint8Array): Promise<void> {
     try {
-      const header = parseVlessHeaderSync(firstChunk);
+      const header = parseAitestHeaderSync(firstChunk);
       if (header.hostname.includes(":")) throw new SilentError("不支持IPv6");
 
-      const isIPv4 = /^\d{1,3}(\.\d{1,3}){3}$/.test(header.hostname);
-      this.targetHost =
-        !isIPv4 && USE_CUSTOM_DNS
-          ? await resolveHostname(header.hostname).catch(() => header.hostname)
-          : header.hostname;
+      this.targetHost = header.hostname;
       this.targetPort = header.port;
 
-      // SSRF 防线：DNS 解析完成后再校验，防止域名绑定私有 IP 的绕过手法
       if (isPrivateIP(this.targetHost))
         throw new SilentError(`SSRF拦截: 禁止访问私有地址 ${this.targetHost}`);
 
@@ -442,9 +310,6 @@ class Session {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  HTTP 服务器
-// ═══════════════════════════════════════════════════════════
 const BASE_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -452,125 +317,95 @@ const BASE_HEADERS = {
   "X-Accel-Buffering": "no",
 } as const;
 
-// ═══════════════════════════════════════════════════════════
-//  启动入口（等待域名探测完成再开服）
-// ═══════════════════════════════════════════════════════════
-async function initServer(): Promise<void> {
-  const currentDomain = await discoverDomain();
+Bun.serve({
+  port: PORT,
+  idleTimeout: 255,
 
-  // 探测完成后生成订阅字符串（只生成一次）
-  SUB_STRING =
-    Buffer.from(
-      `vless://${UUID}@${currentDomain}:443?encryption=none&security=tls` +
-        `&sni=${currentDomain}&fp=chrome&allowInsecure=0&type=xhttp` +
-        `&host=${currentDomain}&path=${CFG.XPATH_ENC}&mode=packet-up#${NAME}`,
-    ).toString("base64") + "\n";
+  async fetch(req: Request): Promise<Response> {
+    const { pathname } = new URL(req.url);
+    const method = req.method;
 
-  Bun.serve({
-    port: PORT,
-    idleTimeout: 255,
+    if (method === "OPTIONS")
+      return new Response(null, {
+        status: 204,
+        headers: { ...BASE_HEADERS, "X-Padding": randomPad(100, 1000) },
+      });
 
-    async fetch(req: Request): Promise<Response> {
-      const { pathname } = new URL(req.url);
-      const method = req.method;
+    if (pathname === "/" || pathname === "/index.html") {
+      try {
+        return new Response(Bun.file(INDEX_HTML), {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        });
+      } catch {
+        return new Response(
+          `<!DOCTYPE html><html><body><h1>It works!</h1></body></html>`,
+          { headers: { "Content-Type": "text/html" } },
+        );
+      }
+    }
 
-      // OPTIONS 预检
-      if (method === "OPTIONS")
+    const match = pathname.match(XHTTP_PATTERN);
+    if (!match) return Response.redirect("/", 302);
+
+    const sessionId = match[1];
+    const seq = match[2] !== undefined ? parseInt(match[2], 10) : null;
+
+    if (method === "GET" && seq === null) {
+      if (sessions.size >= CFG.MAX_SESSIONS && !sessions.has(sessionId))
+        return new Response("503 Server Busy", { status: 503 });
+
+      const session = sessions.get(sessionId) ?? new Session(sessionId);
+      sessions.set(sessionId, session);
+
+      const stream = new ReadableStream<Uint8Array>({
+        start(ctrl) {
+          session.bindDownstream(ctrl);
+        },
+        pull() {
+          session.resumeDownstream();
+        },
+        cancel() {
+          session.cleanup();
+        },
+      });
+
+      return new Response(stream, {
+        headers: {
+          ...BASE_HEADERS,
+          "Content-Type": "application/octet-stream",
+          Connection: "keep-alive",
+          "X-Padding": randomPad(100, 1000),
+        },
+      });
+    }
+
+    if (method === "POST" && seq !== null) {
+      let session = sessions.get(sessionId);
+      if (!session) {
+        if (sessions.size >= CFG.MAX_SESSIONS)
+          return new Response(null, { status: 503 });
+        session = new Session(sessionId);
+        sessions.set(sessionId, session);
+      }
+
+      try {
+        const body = await req.bytes();
+        if (body.byteLength > CFG.MAX_POST_BYTES)
+          return new Response(null, { status: 413 });
+
+        await session.receivePacket(seq, body);
         return new Response(null, {
-          status: 204,
+          status: 200,
           headers: { ...BASE_HEADERS, "X-Padding": randomPad(100, 1000) },
         });
-
-      // 静态页面
-      if (pathname === "/" || pathname === "/index.html") {
-        try {
-          return new Response(Bun.file(INDEX_HTML), {
-            headers: { "Content-Type": "text/html; charset=utf-8" },
-          });
-        } catch {
-          return new Response(
-            `<!DOCTYPE html><html><body><h1>It works!</h1></body></html>`,
-            { headers: { "Content-Type": "text/html" } },
-          );
-        }
+      } catch (err: any) {
+        if (err.message?.includes("缓冲超限")) session.cleanup();
+        return new Response(null, { status: 500 });
       }
+    }
 
-      // 订阅（顶层缓存，已在启动时生成）
-      if (pathname === `/${SUB_PATH}`)
-        return new Response(SUB_STRING, {
-          headers: { "Content-Type": "text/plain" },
-        });
+    return new Response("404 Not Found", { status: 404 });
+  },
+});
 
-      // VLESS XHTTP 路由
-      const match = pathname.match(XHTTP_PATTERN);
-      if (!match) return Response.redirect("/", 302);
-
-      const sessionId = match[1];
-      const seq = match[2] !== undefined ? parseInt(match[2], 10) : null;
-
-      // GET：建立下行流
-      if (method === "GET" && seq === null) {
-        if (sessions.size >= CFG.MAX_SESSIONS && !sessions.has(sessionId))
-          return new Response("503 Server Busy", { status: 503 });
-
-        const session = sessions.get(sessionId) ?? new Session(sessionId);
-        sessions.set(sessionId, session);
-
-        const stream = new ReadableStream<Uint8Array>({
-          start(ctrl) {
-            session.bindDownstream(ctrl);
-          },
-          pull() {
-            session.resumeDownstream();
-          },
-          cancel() {
-            session.cleanup();
-          },
-        });
-
-        return new Response(stream, {
-          headers: {
-            ...BASE_HEADERS,
-            "Content-Type": "application/octet-stream",
-            Connection: "keep-alive",
-            "X-Padding": randomPad(100, 1000),
-          },
-        });
-      }
-
-      // POST：接收上行数据包
-      if (method === "POST" && seq !== null) {
-        let session = sessions.get(sessionId);
-        if (!session) {
-          if (sessions.size >= CFG.MAX_SESSIONS)
-            return new Response(null, { status: 503 });
-          session = new Session(sessionId);
-          sessions.set(sessionId, session);
-        }
-
-        try {
-          const body = await req.bytes();
-          if (body.byteLength > CFG.MAX_POST_BYTES)
-            return new Response(null, { status: 413 });
-
-          await session.receivePacket(seq, body);
-          return new Response(null, {
-            status: 200,
-            headers: { ...BASE_HEADERS, "X-Padding": randomPad(100, 1000) },
-          });
-        } catch (err: any) {
-          if (err.message?.includes("缓冲超限")) session.cleanup();
-          return new Response(null, { status: 500 });
-        }
-      }
-
-      return new Response("404 Not Found", { status: 404 });
-    },
-  });
-
-  console.log(
-    `Ai服务运行中 | 端口: ${PORT} | 域名: ${currentDomain} | UDP: ${CFG.ENABLE_UDP} | 自定义DNS: ${USE_CUSTOM_DNS}`,
-  );
-}
-
-initServer();
+console.log(`运行中～`);
