@@ -2,7 +2,7 @@ import * as crypto from "node:crypto";
 
 const APP_KEY = Bun.env.APP_KEY ?? "B95A80E2-BE6F-40F9-9B68-452E4DA3EF41";
 const APP_PATH = Bun.env.APP_PATH ?? "api/v1/telemetry/sync";
-const PORT = parseInt(Bun.env.PORT ?? "13959", 10);
+const PORT = parseInt(Bun.env.PORT ?? "7860", 10);
 const LOG_LEVEL = parseInt(Bun.env.LOG_LEVEL ?? "1", 10);
 
 const CFG = Object.freeze({
